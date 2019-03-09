@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[margin=0.75in]{geometry}
+\usepackage[square,numbers]{natbib}
+\graphicspath{}
+
+\lstdefinestyle{leftCode}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily
+}
+
+\newcommand\todoNote[1]{\textcolor{red}{#1}}
+
+\title{dis tho}
+\author{Tamara Herbert \\ 1557437}
+\date{March 2019}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction}
+
+\input{litReview.tex}
+\section{Conclusion}
+
+
+\bibliographystyle{unsrtnat}
+\bibliography{ref}
+
+
+\end{document}

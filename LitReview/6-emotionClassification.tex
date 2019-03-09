@@ -1,0 +1,18 @@
+\section{Emotion Classification}
+
+Processing the data into a format which is most beneficial to analyse important, and how the data is classified is an issue which requires research.
+
+Since the variables for Valence, Dominance and Arousal are all continuous, classifying them into discrete classes is ideal and there are primarily three ways that are being considered.
+
+\subsection{Ekmans Emotions}
+One option is for each item in my combined training corpus is to combine the VAD values and assign the text a computed Ekman Basic Emotion\cite{Ekman}. 
+This has the advantages letting the data be classified into six discrete classes which should allow easier classification of training data, but has the disadvantages of only giving six possible emotions, which does not help as the goal is to provide a greater insight into the sentiment of the text and limiting this to only six options is restrictive.
+
+\subsection{Bucketing Variables}
+Another option is splitting the values for each dimension up into buckets, and running a prediction for each value for the target sentence. 
+This is what has been used for prototyping so far, and this has proven to be wildly inaccurate since the distributions for the variables are so unevenly weighted over the dataset.
+
+\subsection{More Emotion classes}
+In Russell's 1977 paper \cite{VADMapping} that the earlier values for Ekman's six basic emotions in Figure \ref{ekmans:graph} were obtained, there are also the VAD values for 145 other emotions such as 'Excited' (VAD: 0.62,0.75,0.25). Using the most useful of these emotions could lead to greater understanding of the data, and would lead to more insightful analysis into the input text. Splitting the data into 145 distinct classes is definitely a step too far, but a balance can be found with the ideal number of them, which can be trialled as part of the project if there is time (but this is not a priority).
+
+Each sentence will be classified based on which emotion it is closest to on a 3D graph, using the shortest distance between points.

@@ -1,0 +1,18 @@
+\section{Analysis Approaches}
+
+There are two fundamental ways of analysis sentiment from a piece of text, each with their own advantages and disadvantages. Both will be explored during this project.
+
+The evaluation metric to compare the analysis approaches will be to compare the  Mean Absolute Percentage Error, calculated by the following: 
+
+$$ MAPE = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{A_t-F_t}{A_t} \right| $$
+where $A_t$ is the actual value and $F_t$ is the predicted value.
+
+\subsection{Lexicon-Based}
+
+By taking the words in a Bag of Words and N-Gram format, a VAD value will be assigned to each word, or set of words and an overall score can be calculated for the sentence by totalling up average score for the sentence. This is a basic place to start from, and provides good results to compare the Machine Learning accuracy predictions to. 
+
+\subsection{Machine Learning}
+
+In multiple cases using a Naive Bayes Classifier and using Support Vector Machines showed the best results in previous semantic analysis research \cite{kolchyna2015twitter} \cite{go2009twitter}, so these will be a priority for analysing effectiveness however more can be taken into account if there is time.
+
+Using Python is a clear choice for developing the Sentiment Analysis tool, due to the prevalence of Natural Language Processing (NLP) and Machine Learning libraries and the documentation in these areas is good. I will primarily make use of the NLTK library \cite{NLTKBook}, which contains features for NLP and basic Machine Learning on sentences and words. 

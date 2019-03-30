@@ -5,19 +5,24 @@
     \item Be critical, strengths and weaknesses of existing work
 \end{itemize}
 
-Many existing sentiment analysis tools are tailored towards market research for businesses, so focus on providing opinion mining tools for social media. This means that they focus on extracting the valence, and the subject that is being talked about in the text. An example of this is the MonkeyLearn sentiment analysis tool, whoic
+Many existing sentiment analysis tools are tailored towards market research for businesses, so focus on providing opinion mining tools for social media. This means that they focus on extracting the valence, and the subject that is being talked about in the text. In terms of obtaining an emotion from a piece of text, this is just limited to retrieving how positive or negative it is. Emotion can be argued as more than just a binary sentiment, so there is an interest into whether more information about the text's mood can be analysed. 
 
-There has been a little research into using a multi-dimensional VAD structure to investigate sentiment, primarily investigating whether using a VAD structure could be used to help identify burnout in software developers by analysing the messages in development repositories. \cite{mantyla2016mining}
 
 \subsection{Sentiment Representation structures}
 
+Almost all existing sentiment analysis tools give a resultant emotion back just with the valence.
+
+To achieve a more in depth understanding of sentiment rather than just the valence, an argument can be made to add two more dimensions, giving the Valence-Arousal-Dominance (VAD) structure for representing emotion.
 
 
 
-
-\subsection{Data Pre-Processing Approaches}
+% \subsection{Data Pre-Processing Approaches}
 \subsection{Model building approaches}
 \begin{itemize}
     \item How can textual sentiment prediction be optimised?
     \item Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?
 \end{itemize}
+
+There has been a little research into using a multi-dimensional VAD structure to investigate sentiment, primarily investigating whether using a VAD structure could be used to help identify burnout in software developers by analysing the messages in development repositories. \cite{mantyla2016mining} In this case, a correlation was found between each of the dimensions and different issues raised within the input text, meaning that there is an argument for using multiple dimensions to help understand textual data to a greater degree. An issue with this research is that they only used a word based lexicon where each word individual word was assigned a value. This loses the context in which each word is being used in, and by using a VAD dataset for sentences to train over this issue will be mitigated.
+
+

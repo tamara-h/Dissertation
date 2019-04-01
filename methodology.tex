@@ -4,9 +4,9 @@
 
 The initial issue faced was how to split the continuous variables supplied by the EmoBank dataset into discrete categories.
 
-An inital look at the data shows that there is a large number of sentences represented with valence values in the neutral, and very few representing the extreme cases. 
+An initial look at the data shows that there is a large number of sentences represented with valence values in the neutral, and very few representing the extreme cases. 
 
-LINE GRAPH WITH NUMBER OF SAMPLES
+\todo{LINE GRAPH WITH NUMBER OF SAMPLES}
 
 The simplest way to initially categorise the data is to round to the nearest whole number, but as shown in figure \ref{dist:5cat}, the extreme classes are not well represented, and would prove very difficult to train a model off since there is such little data there to provide insight. Also having 5 discrete classes for each dimension provides more detail than is necessary for the task at hand.
 
@@ -17,7 +17,6 @@ The simplest way to initially categorise the data is to round to the nearest who
 \includegraphics[scale=0.3]{graphs/5catDist.png}
 \label{dist:5cat}
 \end{figure}
-
 
 Splitting each dimension up into positive or negative values, splitting each sentence into whether it is above or below 2.5 also is an option, allowing easier analysis to compare to other work which generally does just split the valence into positive or negative. The issue here is that the data imbalance is still very great, particularly with the Arousal and Dominance dimensions.
 
@@ -36,11 +35,10 @@ A middle ground can be found when splitting the data into positive, neutral and 
 \end{figure}
 
 
-
 \subsection{Hypothesis Tests}
 
 
-To argue for each of the decisions made when building the final model, a hypothesis test with a 95\% confidence level will be carried out.
+To argue for each of the decisions made when building the final model, a hypothesis test with a 90\% confidence level will be carried out.
 
 Due to the imbalance in the data, a prediction accuracy cannot be used for comparing the models. This is because the majority class dominates, with it being the most likely to be predicted as there are simply more examples available. \cite{al2015applied} 
 
@@ -48,75 +46,136 @@ The F1 score of the prediction model is used in the hypothesis tests. The F1 sco
 
 $$ F1 = 2 * \frac{Precision * Recall}{Precision + Recall} $$
 
-Precision is the ratio of correctly predicted positive observations to the total predicted positive observations.
-
-$$ Precision = \frac{True Positive}{True Positive + False Positives} $$
-
-Recall is the ratio of correctly predicted positive observations to the all observations in actual class. 
-
-$$ Recall = \frac{True Positive}{True Positive + False Negatives} $$
-
-For each investigation that is carried out, a confusion matrix will be produced so that the precision and recall values for each result can be calculated, which will have the following structure: 
-
-
+For each investigation that is carried out, a confusion matrix is be produced so that the precision and recall values for each result can be calculated, which will have the following structure: 
 
 \begin{center}
-\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}| }
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}| }
  \hline
-  & \multicolumn{3}{|c|}{Predicted} \\
+  & \multicolumn{3}{|c|}{Predicted} &\\
  \hline
-   Actual & Negative & Neutral & Positive\\
+   Actual & Negative & Neutral & Positive &\\
     \hline
-    Negative &  True Negative   &  False Negative  & False Negative\\
-    Neutral & False Neutral & True Neutral&  False Neutral \\
-    Positive & False Positive & False Positive &  True Positive\\
+    Negative &  True Negative   &  False Negative  & False Negative & Total Negative\\
+    Neutral & False Neutral & True Neutral&  False Neutral & Total Neutral \\
+    Positive & False Positive & False Positive &  True Positive & Total Positive\\
+    \hline
+    & Total Predicted Negative & Total Predicted Neutral & Total Predicted Positive & \\
  \hline
 \end{tabular}
 
 \end{center}
-This will allow for the easy calculation of the F1 score for each investigation.
+
+And then the precision and recall values can be calculated as follows:
+
+$$ Precision_{Class} = \frac{True Class}{Total Predicted Class} $$
+
+$$ Recall_{Class} = \frac{True Class}{Total Class} $$
+
 
 
 The hypothesis test that will be performed on the data will be the Wilcoxon Signed-Rank Test, since the comparison between the data will be on two related samples, looking for differences in their population rank means, and the data cannot be assumed to be normally distributed, meaning that this is the best test to be using in this case. \cite{wilcoxon1970critical}
 
 
-Each of the experiments are run with k fold validation, with the data from each fold being used for test comparisons.
+Each of the experiments are run with stratified k fold validation, with the data from each fold being used for test comparisons, with k set to 10. The folds are stratified so that the representation of each class remains the same in each fold which is needed due to the large data imbalance. \cite{kohavi1995study}
+
+
+\subsection{Lexicon Analysis}
+
 
 
 \subsection{Data Pre-processing (N-Gram and Feature selection)}
 
+Following Ricky Kim's investigations into semantic analysis \cite{towardsDS}, an investigation into optimising the format for the data input is carried out. 
+
+To be able to analyse the text, the CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary. \todo{cite?}
+
+From this we can limit the number of features that we can take, here the number of features is the number of most popular N-Grams, and we can set the N-Gram range easily. 
+
+The previous investigation only tried N-Gram values ranging up to trigram, but to ensure that this is an optimal result, the experiment will be carried out up to fourgram.
+
+The range of features that was used previously was up to 10,0000 number of features because the results did not improve after this, but since we are using a different dataset, the number of features tested was increased until the resultant graph implied that the F1 score did not improve further. 
+
+The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this is the most commonly used one \todo{cite}
 
 \begin{figure}[h]
-\caption{ngram features}
+\caption{Experimental Results for varying the number of features and values for N-Gram sequences}
 \centering
-\includegraphics[scale=0.6]{graphs/ngramfeatures.png}
+\includegraphics[scale=0.7]{graphs/nGramBinaryGraph300000.png}
+\label{ngramGraph}
 \end{figure}
 
+As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value increases up to a point, and also increases as the number of features also does. An explanation of why the values for fourgram are generally less than for trigram could be because the dataset is not that large and therefore predictions are less accurate since the relationships between the words cannot be properly established, so for our purposes we can leave out fourgram as it requires \todo{x much more processing power than trigram}.
 
+As we want do not want to use unnecessary processing power, we want the number of features in the training set to be as low as possible. 
+
+Using the trigram values to compare, the hypothesis test shows that the F1 score still increases after 85,000 features as shown below:
+
+$$ H_0:  \textnormal{F1 score at 85,000 features is the same than at 165,000 features (the peak on the graph)}$$
+
+$$ H_a: \textnormal{F1 score at 85,000 features is less than at 165,000 features} $$
+
+Using the Wilcoxon rank sum test with 90\% confidence interval 
+p = 0.08 so reject $H_0$
+
+But the score for F1 does not increase significantly after 105,000, which is shown as follows:
+
+$$H_0: \textnormal{F1 score at 105,000 features is the same than at 165,000 features} $$
+$$H_a: \textnormal{F1 score at 105,000 features is less than at 165,000 features}$$
+
+Using the Wilcoxon rank sum test with 90\% confidence interval 
+p = 0.15 so reject $H_a$
+
+
+We can conclude that the optimal number of features to use in the model is 105,000, and this value will be used in the rest of the investigations as to maximise the score of the result model.
+
+
+
+Using this value to compare bigram and trigram results with the following test 
+
+$$ H_0: \textnormal{F1 score of Bigram and Trigram is the same at 105,000 features} $$
+$$ H_1: \textnormal{F1 score of Bigram is less than Trigram at 105,000 features} $$
+
+Using the Wilcoxon rank sum test with 90\% confidence interval 
+p = 0.10
+
+This value is just on the margin, but we will take it as enough evidence that trigram gives a higher F1 score, so can conclude that the value for N in the N-Gram selection will be tri-gram. The R scripts for running these tests are referenced in Appendix
+\todo{make a file}
+\ref{appendix:hypothesis}.
+
+\pagebreak
 
 \subsection{Model Selection}
-\begin{itemize}
-    \item Be critical, strengths and weaknesses of existing work
-\end{itemize}
 
+To choose the models to compare, we will take the top models compared in previous sentiment analysis work \cite{towardsDS} and see which can work best in this situation.
 
 \begin{figure}[h]
 \caption{models}
 \centering
-\includegraphics[scale=0.4]{graphs/models.png}
+\includegraphics[scale=0.5]{graphs/models.png}
+\label{model:graph}
 \end{figure}
 
 
+The inbuilt models in the sklearn package with default settings were used for initial comparison, and as we can see from Figure \ref{model:graph} the difference between the models is very slight, with the F1 scores all within a 3\% range. As expected logistic regression leads to the highest results, but to be certain we run a hypothesis test to ensure the F1 score is greater than the next highest result, Multinomial Naive Bayes as follows:
+
+$$ H_0: \textnormal{F1 score for the Logistic Regression is the same as Multinomial NB}$$
+$$ H_a: \textnormal{F1 score for the Logistic Regression is the greater than Multinomial NB}$$
+
+Using the Wilcoxon rank sum test with 90\% confidence interval, p = 0.02 so reject $H_0$, so we can select Logistic Regression as the optimal classification model to use.
 
 
 \subsection{Oversampling and Undersampling}
 
+To combat the large class imbalance, many machine learning models use oversampling and undersampling of the data. 
+
+
+
+
 \begin{figure}[h]
 \caption{oversample}
 \centering
-\includegraphics[scale=0.5]{graphs/oversampling.png}
+\includegraphics[scale=0.6]{graphs/oversampling.png}
 \end{figure}
-
 
 \begin{figure}[h]
 \caption{undersample}
@@ -124,4 +183,11 @@ Each of the experiments are run with k fold validation, with the data from each 
 \includegraphics[scale=0.5]{graphs/undersample.png}
 \end{figure}
 
+
+
 \subsection{Implementation}
+
+To create a useful implementation of the final model it has been 
+
+\todo{structure of final system}
+

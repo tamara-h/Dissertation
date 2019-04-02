@@ -2,41 +2,49 @@
 \section{Literature Review}
 \subsection{Sentiment Analysis Tools}
 
-\todo{PYTHON}
+Many existing sentiment analysis tools are tailored towards market research for businesses, so focus on providing opinion mining tools for social media. This means that they focus on extracting how positive the text is, and the subject that is being talked about. In terms of obtaining an emotion from a piece of text, this is very limited. Emotion can definitely be argued as more than just a binary structure, which can also be referred to as the Valence of the text, so there is a considerable interest in exploring this further.
 
-Many existing sentiment analysis tools are tailored towards market research for businesses, so focus on providing opinion mining tools for social media. This means that they focus on extracting the valence, and the subject that is being talked about in the text. In terms of obtaining an emotion from a piece of text, this is just limited to retrieving how positive or negative it is. Emotion can be argued as more than just a binary sentiment, so there is an interest into whether more information about the text's mood can be analysed. 
+There seems to be very little existing work which tries to use semantic analysis to predict more than just the valence of text, so comparing this to existing work is a challenge, but commercial solutions tend to present their final sentiment analysis tool as an API for which can be harnessed for general use, and for further projects.
 
-There seems to be very little existing work which tries to use semantic analysis to predict more than just the valence of text, as most existing work is only considering how positive or negative the input is. Attempting to predict a more descriptive form of the emotion of the input will be a challenge.
+The Amazon Web Services (AWS) Platform offers Amazon Comprehend \cite{aws} which is an example of this. 
 
-When analysing the positivity and negativity of tweets, using a lexicon based approach as well as machine learning approaches have been used \cite{kolchyna2015twitter} to great effect. In this case, a combination of the two has proved to be the most effective. Investigating whether these approaches work just as well when taking into account more than just the valence of the text will be the majority of the work on this project. 
+Amazon Comprehend is a NLP tool that extracts things such as a positive or negative sentiment, and entities such as locations that are being discussed in an input text.
 
-Existing sentiment analysis research processes the data a large amount before any machine learning is done on it, for example by removing all the words which lie exactly in the middle of the valence scale.  \cite{kolchyna2015twitter} The different pre-processing methods will also be compared during this project.
+When tested with a misleading piece text, it performs predicting the sentiment of badly, as shown in Figure \ref{aws:sentiment}. This is a clear example of a tool which can be improved upon.
 
+\begin{figure}[ht]
+\caption{Image showing the input text and incorrect analysis of the sentiment of it by the Amazon Comprehend service}
+\centering
+\includegraphics[scale=0.5]{litImgs/comphrendResult.png}
+\label{aws:sentiment}
+\end{figure}
+
+Getting confused with sentences that are actually negative, but include words like 'happy' is common issue with existing sentiment tools and one that should be solved by not only analysing the valence of a text, but ensuring the relationships between the words in the sentence are preserved.
 
 \subsection{Sentiment Representation structures}
 
 \subsubsection{Ekman's Six Basic Emotions}
 
-There is no universally accepted model for representing emotion, but a standard for classifying emotions in a categorical model is using Ekmans six basic emotions \cite{Ekman}. These are identified as Anger, Disgust, Fear, Happiness, Sadness and Surprise. Being able to use these fundamental emotions to represent the sentiment of a text allows for more insight into the emotions around it. Since there are only six discrete classes in which emotions can be placed, this can be argued to be very subjective when classifying however \cite{emoBank}.
+There is no universally accepted model for representing sentiments, but a standard for classifying emotions in a categorical model is using Ekmans six basic emotions \cite{Ekman}. These are identified as Anger, Disgust, Fear, Happiness, Sadness and Surprise. Since there are only six discrete classes in which emotions can be placed, this can be argued to be very subjective when classifying \cite{emoBank}, but are very useful in portraying a general result back to user rather than numeric values.
 
 \subsubsection{Valence}
-A very common way to classify phrases and sentences in sentiment analysis is to analyse the valence of the text \cite{frijda1986emotions}.
+A very common way to classify phrases and sentences in sentiment analysis is to analyse the valence of the text, as already briefly discussed \cite{frijda1986emotions}.
 
-The valence of a piece of text is how positive or negative the emotion behind it is. An example of a sentence with a high valence would be "I am feeling very happy, I'm having a great day!", compared to a low valence, "I am having a terrible day, everything is going wrong". 
-
-As this is a dimensional model, where values chosen could be hypothetically infinite this can represent a wider range than just six classes such as Ekmans emotions, however only measuring the positivity or negativity of a text does not provide much insight into it.
-Using valence in a machine learning context is very useful though, as commonly the valence values can be put into discrete binary classes, positive or negative, and is a good base to start from.
+The valence of a piece of text is how positive or negative is perceived to be, usually rated on a scale between 0 and 1, with 0 being very negative.
+Using valence in a machine learning context is very useful, as commonly it can be put into discrete binary classes and is a good base to structure a more complex model from.
 
 \subsubsection{Valence Arousal Dominance Structure}
 
-The Valence-Arousal-Dominance (VAD) structure introduced in 1974 \cite{VAD} provides a 3D representation for emotions, with each variable being defined as follows:
+The Valence-Arousal-Dominance (VAD) structure provides a 3D representation for emotions, with each variable being defined as follows \cite{VAD}:
 \begin{itemize}
     \item Valence- How positive or negative the statement is.
     \item Arousal- Degree of calmness or excitement, the energy of the statement. 
     \item Dominance- Degree of control over a situation.
 \end{itemize}
 
-Using VAD values allow for easy representation into the Ekman six basic emotions, as although there is no standard on the exact VAD values to use for each emotion, the primary dataset that will be used references values given by Russell and Mehrabian \cite{VADMapping}, which are shown below (adjusted to be on a scale between 0 and 5):
+This structure provides the extra information about an emotion that is needed for a more in depth analysis of text, so will be used as the scale to analyse input text with for this project.
+
+Using VAD values allows for easy representation into the Ekman six basic emotions as well,as there has been a standard for translating between them \cite{VADMapping}, shown in Table \ref{ekmansTable}.
 
 
 \begin{table}[ht]
@@ -54,33 +62,55 @@ Using VAD values allow for easy representation into the Ekman six basic emotions
 \label{ekmansTable}
 \end{table}
 
-Using the VAD structure to represent sentiment in this project was ideal, as it allows for much more description of emotion in text \cite{emotionPerspective}, and having numeric values means its easy to work with.
-
 
 \subsection{Available Data}
-There are two suitable datasets for this task, which will both be used to train the sentiment analysis tool on.
+There are two suitable datasets for this task, with data in two distinct styles which both use a VAD structure to rate input text on.
 
-\subsubsection{Affective Ratings for Words}
-To increase the range of data to train with, a dataset that contains VAD values for almost 14,000 English words\cite{wordsData} is also being incorporated, and can help balance out unnecessarily strongly weighted words by reclassifying them into a more appropriate emotional state. The issue with having only the individual words rated with VAD values means that the context in which the words are used can be lost, so this is a case where using a bag-of-words method for splitting up the sentences may not be the most appropriate.
+
+
+\subsubsection{Bag-of-Words}
+
+The bag-of-words dataset contains 14,000 English words, each with a specific VAD value assigned \cite{wordsData}. Building a prediction model with this dataset would lose any context in which the words are in within a sentence, so is not ideal for this task, but using it to create a lexicon-based bag of words style prediction model will be investigated.
+
+\begin{figure}[h]
+\caption{Frequency of words over each dimension in bag-of-words dataset R: Valence, B: Arousal, G: Dominance. The dataset ranks the words on a scale between 0 and 10, which is adjusted for use with the EmoBank dataset}
+\centering
+\includegraphics[scale=0.4]{graphs/lexiconDist.png}
+\label{lexiconGraph}
+\end{figure}
+
 
 \subsubsection{EmoBank}
 This dataset is the most important one for this project, as it contains 10,000 English sentences covering multiple genres, all annotated with their own VAD values \cite{emoBank}.
 
-This dataset contains VAD values for each piece of text from both writer and the reader of the text, but due to the findings in \cite{emoBank} only the values given by the reader will be used, as it is concluded that this perspective has higher emotionality and therefore they should be easier to train with.
+This dataset contains values for each sample sentence from both the writer and the reader of the text, but due to the findings in the paper accompanying it \cite{emoBank}, only the values given by the reader will be used, as it concluded that this perspective has higher emotionality and therefore they should be easier to build a more accurate model with.
 
-\todo{mention the size of the dataset not being that large}
+Many existing sentiment analysis tools train over very large datasets, scraping information from things such as movie reviews \cite{socher2013recursive} or from Tweets \cite{towardsDS}, and so usually have above 100,000 samples to train from. In this case, the EmoBank dataset only contains 10,000 sentences, and whether this is a limitation will be investigated.
 
 
-
+\begin{figure}[h]
+\caption{Graph showing data distribution. R: Valence, B: Arousal, G: Dominance}
+\centering
+\includegraphics[scale=0.5]{graphs/VADdistribution.png}
+\label{dist:vad}
+\end{figure}
 
 
 \subsection{Data Pre-Processing Approaches}
 
-During investigation of existing sentiment analysis tools, Ricky Kim's series on investigating sentiment in twitter data \cite{towardsDS} explores areas in which data can be pre processed so that predictions can be optimised, and the two main ways that this experiment is done is by varying the N-Gram value and number of features supplied to the model.
+During investigation of existing sentiment analysis tools, R. Kim's series on investigating sentiment in twitter data \cite{towardsDS} has been very influential in this project for inspiring different ways that the data can be pre-processed so that any predictions can be optimised.
+The two main ways that this experiment is done is by varying the N-Gram value and number of features supplied to the model.
 
-\todo{ngram diagram}
+To preserve the relationship between the words in the sentence, n-grams are very useful since it can help maintain negation of words and helps maintain the overall sentiment given in the sample sentence better.
 
-During these experiments, unigrams, bigrams and trigrams are compared and analysed over a feature range of 10000 to 100001. These experiments are done over a totally balanced dataset, with 50\% of the data being classed as having a positive valence, and the other 50\% with a negative one, and produce results as shown in figure that imply that these methods are worth investigating.
+\begin{figure}[h]
+\caption{Diagram showing the way that the n-grams are created}
+\centering
+\includegraphics[scale=0.5]{litImgs/ngrams.png}
+\end{figure}
+
+
+During the experiments put forward by R. Kim, unigrams, bigrams and trigrams are compared and analysed over a feature range of 10000 to 100001. These experiments are done over a totally balanced dataset, with 50\% of the data being classed as having a positive valence, and the other 50\% with a negative one, and produce results as shown in figure that imply that these methods are worth investigating.
 
 
 \begin{figure}[h]
@@ -92,33 +122,46 @@ During these experiments, unigrams, bigrams and trigrams are compared and analys
 
 \subsection{Model building approaches}
 
-There has been a little research into using a multi-dimensional VAD structure to investigate sentiment, primarily investigating whether using a VAD structure could be used to help identify burnout in software developers by analysing the messages in development repositories. \cite{mantyla2016mining} In this case, a correlation was found between each of the dimensions and different issues raised within the input text, meaning that there is an argument for using multiple dimensions to help understand textual data to a greater degree. An issue with this research is that they only used a word based lexicon where each word individual word was assigned a value. This loses the context in which each word is being used in, and by using a VAD dataset for sentences to train over this issue will be mitigated.
+A common way of creating a semantic analysis tool is to use movie reviews, since these already have numeric values attached to them, or Twitter data due to the sheer volume of text available to create a prediction tool.
+When analysing the valence of tweets, using a lexicon based model, as well as implementing machine learning approaches have been used to great effect \cite{kolchyna2015twitter}, and hence these will be the methods investigated the creation of a prediction model.
+
+In terms of developing the sentiment analysis tool, using Python is a clear choice due to the number of Natural Language Processing (NLP) and machine learning libraries availible. The main library that will be utilised is the sklearn library \cite{sklearn}, as it has many in-built machine learning classifiers that can be implemented easily, and there is plenty of documentation to support development with this. 
+
+Using other libraries such as Tensorflow is also applicable in this case,  and they are a powerful tool for building models that utilise neural networks, but in this case using the "off-the-shelf" classifiers given by the sklearn library is all we need for this investigation.
+
+There has been only a little research into using a multi-dimensional VAD structure to investigate sentiment, one paper primarily explores whether using a VAD structure could be used to help identify burnout in software developers \cite{mantyla2016mining}. In this case, a correlation was found between each of the VAD dimensions and issues raised in messages from the developers, meaning that there is an argument for using multiple dimensions to help understand textual data to a greater degree. An issue with this research is that they only used a word based lexicon where each individual word was assigned a value. This loses the context in which each word is being used in, and by using n-grams this issue will be mitigated.
 
 
-Generally for semantic analysis machine learning models, Logistic Regression is a popular classifier due to it being linear and scalable for large datasets \cite{towardsDS}, so this is the model that will be initially used for creating the model, although others will be analysed as well, such as other models that have shown to give good results for sentiment analysis tasks, like different styles of Bayes classifiers which depend slightly on how many classes are being classified. Multinomial is the most common for text categorization problems, so this one will also be of interest. \cite{frank2006naive}
+Before exploring machine learning approaches, a lexicon based model will be established. This is using the bag-of-words dataset, \cite{wordsData} where each individual word in the input sentence is looked up in the dataset, assigned a value, then an average can be taken over the input sentence to give a resultant VAD score. This method has been used before to great effect with binary valence classification, and so investigating it in this case should lead to promising results \cite{kolchyna2015twitter}.
 
-Previous work tends to avoid using computationally expensive approaches such as K-Nearest Neighbours and Random Forests due to the size of the datasets being used, but since the dataset being used in this case is not that large, it is worth investigating those models as well.
+When choosing the machine learning based classifiers to investigate, literature shows that the same few classifiers tend to show the best results for analysing textual data.\cite{kolchyna2015twitter} \cite{frank2006naive}.
 
+Generally for semantic analysis machine learning models, Logistic Regression is popular, due to it being linear and scalable for large datasets \cite{towardsDS}. This is the model that will be initially used for comparing data pre-processing results.
+Other classifiers that have been shown to give positive results for similar tasks are different styles of Bayes classifiers,  which depend slightly on how many classes are being used. Multinomial is the most common for text categorisation problems, so this one will also be of high interest. \cite{frank2006naive}
+
+Previous work tends to avoid using computationally expensive approaches such as K-Nearest Neighbours and Random Forests due to the size of the datasets being used, but since the Emobank dataset is not that large, it is worth investigating those models as well.
+
+To compare these models further, we will also take a note of a rough estimate time it take for each classifier to run, to give us an idea of how much computation each takes.
 
 \subsection{Over and Undersampling}
 
-Due to the imbalance of data across the Emobank dataset, trying to mitigate the effects of this is a challenge that has different ways of being tacked, and one common way of doing this is through oversampling the minority classes in the data to create a more balanced dataset. \cite{towardsDS}
+Due to the imbalance of data across the Emobank dataset as shown in Figure \ref{dist:vad}, trying to mitigate the effects of this is a challenge that has different ways of being tacked, and one common way of doing this is through oversampling the minority classes in the data, creating a more balanced dataset. \cite{towardsDS}
 
-Since manually inputting more data into the dataset would take more time than is sensible, the most common way to oversample the data that we are given is through SMOTE (Synthetic Minority Oversampling Technique). This uses a k nearest neighbours approach to create synthetic data of the existing samples in the dataset, and has been shown to have positive results with general machine learning tasks but has been known to be problematic with textual data due to not actually creating synthetic samples which make logical sense. Investigating this method is worthwhile, although the expected results are fairly unknown as it depends heavily on the data in the minority classes.
+Since manually inputting more data would take more time than is sensible, the most common way to oversample the data that we are given, is through SMOTE (Synthetic Minority Oversampling Technique). This uses a K-Nearest neighbours approach to create synthetic data of the existing minority samples , and has been shown to have positive results with general machine learning tasks but has been known to be problematic with textual data, due to not actually creating synthetic samples which make logical sense. Investigating this method is worthwhile, although the expected results are fairly unknown as it depends heavily on the data in the minority classes.
 
-There are other popular oversampling techniques that exist as well, for example just randomly re-sampling the minority class, as well as ADASYN (Adaptive Synthetic Sampling) which is a a form of a SMOTE oversampler which works better for classifiers without clear class boundaries.
+There are other popular oversampling techniques that exist as well, for example just randomly re-sampling the minority class, as well as ADASYN (Adaptive Synthetic Sampling) which is a a form of a SMOTE oversampler which works better for classifiers without clear class boundaries, which will also be investigated.
 
-Another method to try is undersampling the data, removing less important samples from the majority class so that the dataset is more balanced. This in itself can cause issues since you are reducing the amount of data that can be trained off, and literature shows that it tends to not have positive results for textual data, but since it can be used in circumstances when there is not enough data in the minority class to create decent synthetic samples, it is worth investigating in this case. \cite{more2016survey} There are different methods of doing this, from randomly removing items from the majority class, to using the three variations of the NearMiss undersampler which uses different ways of implementing K-Nearest neighbours to select suitable samples to remove. 
+Another, slightly different approach is to undersample the data, removing less important samples from the majority class so that the dataset is more balanced. This in itself can cause issues since you are reducing the amount of data that can be trained off, and literature shows that it tends to not have positive results for textual data, but since it can be used in circumstances when there is not enough data in the minority class to create decent synthetic samples in oversampling, it is worth exploring in this case \cite{more2016survey}. There are different methods of undersampling, from randomly removing items from the majority class, to using the three variations of the NearMiss undersampler, which uses different ways of implementing K-Nearest neighbours to select suitable samples to remove. 
 
 \subsection{Presenting Results}
 
 Existing sentiment analysis tools either do not do anything with a final model, or use the tool as an API for use in general projects \cite{sentimentAPI}.  
 
-Since giving input text is such a subjective issue, to be able to get outside input into whether the predicted sentiment is correct a web application can be made. 
+To be able to present in the final model in a way that can be used to gather whether using more than 1 dimension gives more insight, an API will be created from it, and web application that can access the data will be produced to allow for further analysis.
 
-Music is also something, like a general mood of a piece of text, that cannot be easily classified into a single emotion, so relating the output VAD values of the produced model to songs is something that is worth exploring.
+Music is also something  that cannot be easily classified into a binary sentimental structure, so relating the output VAD values of the produced model to songs is something that is worth exploring.
 
-An existing product that does this is the MoodTape web application, which does only use the valence of input text and relates this to the valence of a song  \cite{moodtape}. Since as shown in Listing \ref{spotifyJSON}, much more information can be obtained from individual songs than just the valence, an improvement of this project would be to relate the Dominance and Arousal dimensions to some of the other attributes.
+An existing product that does this is the MoodTape web application, which uses the valence of input text and relates this to the valence of a song  \cite{moodtape}. Since, as shown in Listing \ref{spotifyJSON}, much more information can be obtained from individual songs than just the valence, an improvement of this project would be to relate the Dominance and Arousal dimensions to some of the other attributes.
 
 \begin{lstlisting}[style=leftCode, caption={Some of the attributes of a song obtained through requesting information through the Spotify API},captionpos=b, label={spotifyJSON}]
 {
@@ -136,4 +179,6 @@ An existing product that does this is the MoodTape web application, which does o
 }
 \end{lstlisting}
 
-Having experience in API development, creating an interface to connect a built model with the Spotify API is a stretch target that can be made so that a subjective analysis can be made of the models performance. 
+Using the Spotify API for this purpose is ideal, since it is easy it query and obtain information about a song, and can also be utilised to create a web application that is relatively enjoyable for a user to to use.
+
+Using a web UI to present the results that has been done in the MoodTape application, and is probably the simplest way to gather all the data together, and so a simple web application will be produced. This will be done using Angular.js, due to previous development knowledge.

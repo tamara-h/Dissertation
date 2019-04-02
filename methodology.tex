@@ -2,14 +2,11 @@
 \section{Methodology}
 \subsection{Data Imbalance}
 
-The initial issue faced was how to split the continuous variables supplied by the EmoBank dataset into discrete categories.
+The initial issue faced when starting to attempt to build a prediction model, was how to split the continuous variables supplied by the EmoBank dataset into discrete categories.
 
-An initial look at the data shows that there is a large number of sentences represented with valence values in the neutral, and very few representing the extreme cases. 
+An initial look at the data shows that there is a large number of sentences represented with values a neutral area, and very few representing the extreme cases, as shown in Figure \ref{dist:vad}.
 
-\todo{LINE GRAPH WITH NUMBER OF SAMPLES}
-
-The simplest way to initially categorise the data is to round to the nearest whole number, but as shown in figure \ref{dist:5cat}, the extreme classes are not well represented, and would prove very difficult to train a model off since there is such little data there to provide insight. Also having 5 discrete classes for each dimension provides more detail than is necessary for the task at hand.
-
+The simplest way to initially categorise the data is to round to the nearest whole number, but as shown in Figure \ref{dist:5cat}, the extreme classes are not well represented, and would prove very difficult to train a model off. Having 5 discrete classes for each dimension also provides more detail than is probably necessary for the task at hand, so can be simplified.
 
 \begin{figure}[h]
 \caption{Graph showing data distribution when split into five classes}
@@ -18,37 +15,38 @@ The simplest way to initially categorise the data is to round to the nearest who
 \label{dist:5cat}
 \end{figure}
 
-Splitting each dimension up into positive or negative values, splitting each sentence into whether it is above or below 2.5 also is an option, allowing easier analysis to compare to other work which generally does just split the valence into positive or negative. The issue here is that the data imbalance is still very great, particularly with the Arousal and Dominance dimensions.
+Splitting each dimension up into positive or negative values is also is an option, allowing an easier comparison to other work which generally does this. The issue here is that the data imbalance is still very great, particularly with the Arousal and Dominance dimensions, as shown in Figure \ref{dist:bin}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \caption{Graph showing data distribution when split into binary positive and negative classes}
 \centering
-\includegraphics[scale=0.3]{graphs/binaryDist.png}
+\includegraphics[scale=0.25]{graphs/binaryDist.png}
+\label{dist:bin}
 \end{figure}
 
-A middle ground can be found when splitting the data into positive, neutral and negative classes, as even though there is still a data imbalance there, it is less severe, and so is used for the rest of analysis over the data.
+A middle ground can be found when splitting the data into positive, neutral and negative classes, as even though there is still a data imbalance there, it is less severe, and this is chosen as how to represent the data moving forward, shown in Figure \ref{dist:tri}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \caption{Graph showing data distribution when split into positive, neutral negative classes}
 \centering
 \includegraphics[scale=0.3]{graphs/nonBinaryDist.png}
+\label{dist:tri}
 \end{figure}
+
+\pagebreak
 
 
 \subsection{Hypothesis Tests}
 
-
 To argue for each of the decisions made when building the final model, a hypothesis test with a 90\% confidence level will be carried out.
 
-Due to the imbalance in the data, a prediction accuracy cannot be used for comparing the models. This is because the majority class dominates, with it being the most likely to be predicted as there are simply more examples available. \cite{al2015applied} 
+Due to the imbalance in the data, a prediction accuracy cannot be used for comparing the models. This is because the majority class dominates, with it being the most likely to be predicted as there are simply more examples available \cite{al2015applied}, heavily biasing the accuracy results.
 
-The F1 score of the prediction model is used in the hypothesis tests. The F1 score is the weighted average of the Precision and Recall of a model, which are defined as follows: 
+For each investigation that is carried out, a confusion matrix is be produced as shown in Table \ref{conmat}, so that proper analysis of the results can be made.
 
-$$ F1 = 2 * \frac{Precision * Recall}{Precision + Recall} $$
-
-For each investigation that is carried out, a confusion matrix is be produced so that the precision and recall values for each result can be calculated, which will have the following structure: 
-
-\begin{center}
+\begin{table}
+\centering
+\caption{Structure of produced confusion matrices}
 \begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}| }
  \hline
   & \multicolumn{3}{|c|}{Predicted} &\\
@@ -62,26 +60,78 @@ For each investigation that is carried out, a confusion matrix is be produced so
     & Total Predicted Negative & Total Predicted Neutral & Total Predicted Positive & \\
  \hline
 \end{tabular}
+\label{conmat}
+\end{table}
 
-\end{center}
+The F1 score of the prediction model is used in the hypothesis tests. The F1 score is the weighted average of the Precision and Recall of a model, which are defined as follows: 
+
+$$ F1 = 2 * \frac{Precision * Recall}{Precision + Recall} $$
 
 And then the precision and recall values can be calculated as follows:
 
-$$ Precision_{Class} = \frac{True Class}{Total Predicted Class} $$
+$$ Precision_{Class} = \frac{True_{Class}}{Total Predicted_{Class}} $$
 
-$$ Recall_{Class} = \frac{True Class}{Total Class} $$
+$$ Recall_{Class} = \frac{True_{Class}}{Total_{Class}} $$
 
+Each of the experiments are run with stratified K-Fold validation, with the data from each fold being used for the hypothesis test comparisons, using 10 folds. The folds are stratified so that the representation of each class remains the same in each fold which is needed due to the large data imbalance \cite{kohavi1995study}.
 
+Using this score instead of the accuracy gets rid of the class bias, and in this case it is calculated using the micro-average of the K-Folds. The micro average aggregates the contributions of each class so that any imbalance can be mitigated.
 
-The hypothesis test that will be performed on the data will be the Wilcoxon Signed-Rank Test, since the comparison between the data will be on two related samples, looking for differences in their population rank means, and the data cannot be assumed to be normally distributed, meaning that this is the best test to be using in this case. \cite{wilcoxon1970critical}
-
-
-Each of the experiments are run with stratified k fold validation, with the data from each fold being used for test comparisons, with k set to 10. The folds are stratified so that the representation of each class remains the same in each fold which is needed due to the large data imbalance. \cite{kohavi1995study}
-
+The hypothesis test that will be performed on the data will be the Wilcoxon Signed-Rank Test, since the comparison between the data will be on two related samples, and the data cannot be assumed to be normally distributed within the folds, meaning that this is the best test to be using in this case \cite{wilcoxon1970critical}.
 
 \subsection{Lexicon Analysis}
-\todo{do this}
 
+To create a valid F1 score to create a base model off, we will calculate the confusion matrix and then the F1 score of a lexicon based prediction model, where the result VAD values are calculated by averaging the values of the sentences individual words that are looked up within the lexicon based dataset \cite{wordsData} for each instance in the Emobank dataset. These values are then compared to the assigned scores that are given to it.
+
+To get the words from the EmoBank dataset into a state where they are most likely to be found within the lexicon dataset is to perform some natural language processing on the data, using the NLTK \cite{NLTKBook} library to stem the words, returning words to their root form.
+
+An example of this is the word "Fishing" would be reduced to the word "Fish" after being stemmed. 
+
+As we can see from Figure \ref{lexiconGraph}, the average values for the Arousal are much lower across the lexicon dataset, and this is reflected in the F1 scores for each dimension that are returned from this model:
+
+\begin{table}
+\centering
+\label{lexicon:f1}
+\caption{F1 scores for the 3 dimensions for the bag-of-words model}
+\begin{tabular}{ |p{3cm}|p{3cm}|}
+ \hline
+  Dimension & F1 Score \\
+ \hline
+  Valence & 0.72\\
+  Arousal & 0.08 \\
+  Dominance & 0.80\\
+ \hline
+\end{tabular}
+
+\end{table}
+
+We can see that in fact that for the Valence and Dominance dimensions, this form of prediction performs quite well, and whether these scores can be further improved with machine learning methods will be interesting.
+
+To explore why the Arousal dimension performs so badly, we can take a closer look at the generated confusion matrix, as shown in Table \ref{lexicon:a:conmat}. As we can see, most of the neutral data was predicted to be negative, which is definitely influenced by the trend in the lexicon dataset for the Arousal values to be lower. There are also no correctly predicted values in the positive class, which also leads to the extremely low F1 score.
+
+\begin{table}
+\centering
+\label{lexicon:a:conmat}
+\caption{Confusion matrix for Arousal}
+\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3cm}| }
+ \hline
+  & \multicolumn{3}{|c|}{Predicted} \\
+ \hline
+   Actual & Negative & Neutral & Positive \\
+    \hline
+    Negative &  313   &  10  & 0 \\
+    Neutral & 7001 & 384 &  3 \\
+    Positive & 656 & 83 &  0 \\
+
+ \hline
+\end{tabular}
+
+\end{table}
+
+
+Note that the values in Table \ref{lexicon:a:conmat} do not cover the whole dataset either, due to instances when all of the words in the EmoBank sample cannot be found within the lexicon dataset. In this case there are around 1500 sentences for which a VAD value could not be calculated, showing that this bag-of-words based method is far from optimal.
+
+To run across the whole EmoBank dataset, this implementation takes 182 seconds.
 
 \subsection{Data Pre-processing (N-Gram and Feature selection)}
 
@@ -95,7 +145,7 @@ The previous investigation only tried N-Gram values ranging up to trigram, but t
 
 The range of features that was used previously was up to 10,0000 number of features because the results did not improve after this, but since we are using a different dataset, the number of features tested was increased until the resultant graph implied that the F1 score did not improve further. 
 
-The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this is the most commonly used one \todo{cite}
+The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this has been shown to give the most promising results \cite{towardsDS}.
 
 \begin{figure}[h]
 \caption{Experimental Results for varying the number of features and values for N-Gram sequences}
@@ -104,9 +154,29 @@ The model used to investigate how the F1 score varies as the inputs change will 
 \label{ngramGraph}
 \end{figure}
 
-As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value increases up to a point, and also increases as the number of features also does. An explanation of why the values for fourgram are generally less than for trigram could be because the dataset is not that large and therefore predictions are less accurate since the relationships between the words cannot be properly established, so for our purposes we can leave out fourgram as it requires \todo{x much more processing power than trigram}.
+As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value increases up to a point, and also increases as the number of features also does. An explanation of why the values for fourgram are generally less than for trigram could be because the dataset is not that large and therefore predictions are less accurate since the relationships between the words cannot be properly established, so for our purposes we can leave out fourgram as it requires a significantly higher amount of processing time, as shown in Table \ref{ngram:time}. The values in Table \ref{ngram:time} are estimates calculated just to show the scale differences between the variables.
 
-As we want do not want to use unnecessary processing power, we want the number of features in the training set to be as low as possible. 
+
+\begin{table}
+\centering
+\label{ngram:time}
+\caption{Approximate Computation time for each N-Gram value.}
+\begin{tabular}{ |p{3cm}|p{3cm}|}
+ \hline
+  N-Gram selection & Time (s) \\
+ \hline
+  unigram & 71\\
+  bigram & 241\\
+  trigram & 406\\
+  fourgram & 1105 \\
+ \hline
+\end{tabular}
+
+\end{table}
+
+
+As we want do not want to use unnecessary processing power, we want the number of features in the training set to be as low as possible, and setting 
+
 
 Using the trigram values to compare, the hypothesis test shows that the F1 score still increases after 85,000 features as shown below:
 
@@ -138,11 +208,9 @@ $$ H_1: \textnormal{F1 score of Bigram is less than Trigram at 105,000 features}
 Using the Wilcoxon rank sum test with 90\% confidence interval 
 p = 0.10
 
-This value is just on the margin, but we will take it as enough evidence that trigram gives a higher F1 score, so can conclude that the value for N in the N-Gram selection will be tri-gram. The R scripts for running these tests are referenced in Appendix
-\todo{make a file}
-\ref{appendix:hypothesis}.
+This value is just on the margin, but we will take it as enough evidence that trigram gives a higher F1 score, so can conclude that the value for N in the N-Gram selection will be trigram. The R scripts for running these tests are referenced in Appendix \ref{appendix:hypothesis}.
 
-\pagebreak
+% \pagebreak
 
 \subsection{Model Selection}
 
@@ -172,7 +240,7 @@ Since it is unclear whether these methods will actually improve the model, compa
 
 
 \begin{figure}[ht]
-\caption{oversample}
+\caption{Graph showing the F1 score for different oversampling methods}
 \centering
 \includegraphics[scale=0.7]{graphs/oversampling.png}
 \label{oversamplegraph}
@@ -184,9 +252,9 @@ An explanation as to why this is happening is most likely a combination of using
 The undersampling methods were known to not give promising results, but due to the issues with oversampling over such imbalance, briefly investigating this was something that could potentially have worked, but as shown in Figure \ref{undersamplegraph}, they all made the model perform significantly worse and hence can be disregarded.
 
 \begin{figure}[ht]
-\caption{undersample}
+\caption{Graph showing the F1 score for different undersampling methods}
 \centering
-\includegraphics[scale=0.7]{graphs/undersample.png}
+\includegraphics[scale=0.6]{graphs/undersample.png}
 \label{undersamplegraph}
 \end{figure}
 
@@ -203,7 +271,23 @@ The final model that was produced then had the following characteristics:
     \item No oversampling or undersampling techniques were applied.
 \end{itemize}
 
-Which results in a model that has an average F1 score of 0.7843 (4 significant figures). 
+Which results in a model that has the F1 scores for the prediction of each dimension shown in Table \ref{ML:f1}.
+
+\begin{table}
+\centering
+\label{ML:f1}
+\caption{F1 scores for the 3 dimensions for machine learning model}
+\begin{tabular}{ |p{3cm}|p{3cm}|}
+ \hline
+  Dimension & F1 Score \\
+ \hline
+  Valence & 0.78\\
+  Arousal & 0.86 \\
+  Dominance & 0.89\\
+ \hline
+\end{tabular}
+
+\end{table}
 
 \subsection{Implementation}
 
@@ -213,7 +297,7 @@ The final solution, as shown in Figure \ref{implementationLayout} consists of th
 
 The UI was chosen to be built in Angular.js and the music API with Node.js due to prior development knowledge, and hence ease of prototyping. 
 To ensure that any resultant song given back was one that the user could relate to, the song that is given back is taken from the users recent top songs. 
-The music API, built in Node.js is influenced by the structure of existing Spotify API projects \cite{moodtape}, is built mostly using the Node Package spotify-web-api-node \cite{nodeSpotify} which allows for ease of dealing with authenticating users, so that the users top songs can be accessed.
+The music API, built in Node.js is influenced by the structure of existing Spotify API projects \cite{moodtape}, is built mostly using the Node package spotify-web-api-node \cite{nodeSpotify} which allows for ease of dealing with authenticating users, so that the users top songs can be accessed.
 
 \begin{figure}[ht]
 \caption{General layout of how the web application is structured.}
@@ -221,7 +305,6 @@ The music API, built in Node.js is influenced by the structure of existing Spoti
 \includegraphics[scale=0.6]{litImgs/interfaceLayout.png}
 \label{implementationLayout}
 \end{figure}
-                
 
 Choosing how to relate the VAD values to the data returned by the Spotify was relatively arbitrary, and something that if there was more time could be investigated further. Since the song data returns a Valence value for the song, that is an easy relation, and it was chosen to map the Arousal to the "Energy" attribute, and the Dominance to the "Danceability", but this is something that can be improved upon as plenty of other data is also returned about the song which can be related to the three dimensions, such as relating the tempo and loudness of the songs.
 

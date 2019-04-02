@@ -3,7 +3,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{color}
-\usepackage[margin=0.75in]{geometry}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{todonotes}
@@ -23,7 +24,6 @@
   basicstyle=\footnotesize\ttfamily
 }
 
-\newcommand\todoNote[1]{\textcolor{red}{#1}}
 
 \begin{document}
 
@@ -59,11 +59,23 @@
 	%------------------------------------------------
 	%	Author(s)
 	%------------------------------------------------
-
-	% If you don't want a supervisor, uncomment the two lines below and comment the code above
-	{\large\textit{Author}}\\
-	Tamara \textsc{Herbert} \\ 
-	1557437
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft}
+			\large
+			\textit{Author}\\
+			Tamara \textsc{Herbert} \\
+			1557437% Your name
+		\end{flushleft}
+	\end{minipage}
+	~
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushright}
+			\large
+			\textit{Supervisor}\\
+			Leandro \textsc{Minku} % Supervisor's name
+		\end{flushright}
+	\end{minipage}
 	
 	%------------------------------------------------
 	%	Date
@@ -94,21 +106,24 @@
 
 \section{Introduction}
 
-Analysing the emotions behind a piece of text is not always an easy problem even for human readers, and trying to compute this is much harder. Existing sentiment analysis tools primarily concentrate on just whether a text is positive or negative. \cite{kolchyna2015twitter}
-Most text that we want to analyse however expresses more emotion than just positivity or negativity, and this project will attempt to use various analysis techniques to analyse input text and produce detailed sentimental feedback about it.
+Analysing the emotions behind a piece of text is not always an easy problem even for human readers, and trying to compute this is much harder.
+
+Many sentiment analysis tools already exist that predict whether input text is positive or negative, but very few attempt to obtain more detail about the mood behind it. Understanding something as subjective as an emotion cannot always be put into these discrete binary classes, and as such, exploring whether an emotion can be represented by more than just this one dimension, could hold significant value.
+
+Extensive research has gone into optimising these existing prediction models however, and applying the results of these investigations to a more complex emotive prediction is something that this project aims to examine.
+
+We can formalise this into two main research questions to answer:
 
 \subsection{Research Questions}
 \begin{itemize}
     \item How can textual sentiment prediction be optimised?
     \item Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?
-
 \end{itemize}
 
 
 \input{body.tex}
-
-
 \section{Conclusion}
+That was fun
 
 \pagebreak
 

@@ -1,11 +1,27 @@
 \section{Results and Discussion}
-\begin{itemize}
-    \item How can textual sentiment prediction be optimised?
-    \item Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?
-\end{itemize}
 
+
+\subsection{How can textual sentiment prediction be optimised?}
+
+Two main methods of predicting the sentiment of input text have been analysed, using a bag-of-words method, and using machine learning approaches.
+
+The lexicon based bag-of-words is based entirely on having an appropriate dataset to rank the words, since as Table \ref{lexicon:f1} shows, having rated VAD scores which follow a certain structure is key to obtaining good results. Dimensions like the Dominance and Arousal of a piece of text can be very subjective, and vary depending on what the data is ranging these scores from. 
+
+The decision to use the machine learning based model for the implementation is due to having overall more stable F1 scores for each dimension, but this is only due to training and testing over the same dataset. 
+
+
+    
 \todo{mosaic plot, adjusting the score}
 
-To be able to evoke enough emotive text from a user, the UI states "Please describe how your week is going so far. Be as detailed as possible.". This was arbitrarily chosen, and 
+\todo{table with computation times, compare them}
 
-\subsection{Further Work}
+\subsection{Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?}
+
+To be able to evoke enough emotive text from a user, the UI states "Please describe how your week is going so far. Be as detailed as possible.". This was arbitrarily chosen as just a question that does not simply have a yes or no answer, and an investigation could be made in future to find a better way of inspiring the optimal amount of input text an particularly emotive style.
+
+To quantify whether the result model can actually provide a way of representing the emotion, passing the values through to the 
+
+
+\subsection{Project Analysis}
+
+

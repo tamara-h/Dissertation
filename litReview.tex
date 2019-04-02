@@ -8,7 +8,7 @@ Many existing sentiment analysis tools are tailored towards market research for 
 
 There seems to be very little existing work which tries to use semantic analysis to predict more than just the valence of text, as most existing work is only considering how positive or negative the input is. Attempting to predict a more descriptive form of the emotion of the input will be a challenge.
 
-When analysing the positivity and negativity of tweets, using a lexicon based approach as well as machine learning approaches have been used \cite{kolchyna2015twitter} to great effect. In this case, a combination of the two has proved to be the most effective. Investigating whether these approaches work just as well when taking into account more than just the valence of the text will be the majority of the work on this project.
+When analysing the positivity and negativity of tweets, using a lexicon based approach as well as machine learning approaches have been used \cite{kolchyna2015twitter} to great effect. In this case, a combination of the two has proved to be the most effective. Investigating whether these approaches work just as well when taking into account more than just the valence of the text will be the majority of the work on this project. 
 
 Existing sentiment analysis research processes the data a large amount before any machine learning is done on it, for example by removing all the words which lie exactly in the middle of the valence scale.  \cite{kolchyna2015twitter} The different pre-processing methods will also be compared during this project.
 
@@ -36,7 +36,23 @@ The Valence-Arousal-Dominance (VAD) structure introduced in 1974 \cite{VAD} prov
     \item Dominance- Degree of control over a situation.
 \end{itemize}
 
-Using VAD values allow for easy representation into the Ekman six basic emotions, as although there is no standard on the exact VAD values to use for each emotion, the primary dataset that will be used references values given by Russell and Mehrabian \cite{VADMapping}.
+Using VAD values allow for easy representation into the Ekman six basic emotions, as although there is no standard on the exact VAD values to use for each emotion, the primary dataset that will be used references values given by Russell and Mehrabian \cite{VADMapping}, which are shown below (adjusted to be on a scale between 0 and 5):
+
+
+\begin{table}[ht]
+\caption{Ekmans emotions mapped to VAD values \cite{VADMapping}}
+\centering
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+  & Anger & Disgust & Fear & Happiness & Sadness & Surprise \\ 
+ \hline                        
+ Valence & 1.23 & 1 & 0.9 & 4.53 & 0.93 & 3.5\\ 
+ Arousal & 3.98 & 3.38 & 4 & 3.78 & 1.83 & 4.18\\ 
+ Dominance & 3.13 & 2.78 & 1.43 & 3.65 & 1.68 & 2.18\\ 
+ \hline
+\end{tabular}
+\label{ekmansTable}
+\end{table}
 
 Using the VAD structure to represent sentiment in this project was ideal, as it allows for much more description of emotion in text \cite{emotionPerspective}, and having numeric values means its easy to work with.
 
@@ -86,9 +102,9 @@ Previous work tends to avoid using computationally expensive approaches such as 
 
 \subsection{Over and Undersampling}
 
-Due to the imbalance of data across the Emobank dataset, trying to mitigate the effects of this is a challenge that has different ways of being tacked, and one common way of doing this is through oversampling the minority classes in the data to create a more balanced dataset. 
+Due to the imbalance of data across the Emobank dataset, trying to mitigate the effects of this is a challenge that has different ways of being tacked, and one common way of doing this is through oversampling the minority classes in the data to create a more balanced dataset. \cite{towardsDS}
 
-Since manually inputting more data into the dataset would take more time than is sensible, the most common way to oversample the data that we are given is through SMOTE (Synthetic Minority Oversampling Technique). This uses a k nearest neighbours approach to create synthetic data of the existing samples in the dataset, and has been shown to have positive results with general machine learning tasks but has been known to be problematic with textual data due to not actually creating synthetic samples which make logical sense. Investigating this method is worthwhile, although the expected results are fairly unknown.
+Since manually inputting more data into the dataset would take more time than is sensible, the most common way to oversample the data that we are given is through SMOTE (Synthetic Minority Oversampling Technique). This uses a k nearest neighbours approach to create synthetic data of the existing samples in the dataset, and has been shown to have positive results with general machine learning tasks but has been known to be problematic with textual data due to not actually creating synthetic samples which make logical sense. Investigating this method is worthwhile, although the expected results are fairly unknown as it depends heavily on the data in the minority classes.
 
 There are other popular oversampling techniques that exist as well, for example just randomly re-sampling the minority class, as well as ADASYN (Adaptive Synthetic Sampling) which is a a form of a SMOTE oversampler which works better for classifiers without clear class boundaries.
 

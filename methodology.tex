@@ -80,14 +80,14 @@ Each of the experiments are run with stratified k fold validation, with the data
 
 
 \subsection{Lexicon Analysis}
-
+\todo{do this}
 
 
 \subsection{Data Pre-processing (N-Gram and Feature selection)}
 
 Following Ricky Kim's investigations into semantic analysis \cite{towardsDS}, an investigation into optimising the format for the data input is carried out. 
 
-To be able to analyse the text, the CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary. \todo{cite?}
+To be able to analyse the text, the sklearn CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary. \cite{sklearn}
 
 From this we can limit the number of features that we can take, here the number of features is the number of most popular N-Grams, and we can set the N-Gram range easily. 
 
@@ -149,7 +149,7 @@ This value is just on the margin, but we will take it as enough evidence that tr
 To choose the models to compare, we will take the top models compared in previous sentiment analysis work \cite{towardsDS} and see which can work best in this situation.
 
 \begin{figure}[h]
-\caption{models}
+\caption{Graph showing the different F1 scores for varying types of classifier}
 \centering
 \includegraphics[scale=0.5]{graphs/models.png}
 \label{model:graph}
@@ -166,28 +166,77 @@ Using the Wilcoxon rank sum test with 90\% confidence interval, p = 0.02 so reje
 
 \subsection{Oversampling and Undersampling}
 
-To combat the large class imbalance, many machine learning models use oversampling and undersampling of the data. 
+To carry out the investigation of applying the oversampling and undersampling methods, the library functions in the imblearn API is used, which can be used in conjunction with the sklearn methods easily. 
+
+Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary, and as we can see from Figure \ref{oversamplegraph}, using any oversampling methods actually decreases the F1 score by a significant amount. 
 
 
-
-
-\begin{figure}[h]
+\begin{figure}[ht]
 \caption{oversample}
 \centering
-\includegraphics[scale=0.6]{graphs/oversampling.png}
+\includegraphics[scale=0.7]{graphs/oversampling.png}
+\label{oversamplegraph}
 \end{figure}
 
-\begin{figure}[h]
+An explanation as to why this is happening is most likely a combination of using textual data, which is known to cause issues with oversampling methods, and the severity of the imbalance in the data. In the valence class, which is the one we are analysing at this point, the negative samples make up less than 10\% of the overall data and therefore many of the synthetic samples that are created will not make grammatical sense and be of poor quality. 
+
+
+The undersampling methods were known to not give promising results, but due to the issues with oversampling over such imbalance, briefly investigating this was something that could potentially have worked, but as shown in Figure \ref{undersamplegraph}, they all made the model perform significantly worse and hence can be disregarded.
+
+\begin{figure}[ht]
 \caption{undersample}
 \centering
-\includegraphics[scale=0.5]{graphs/undersample.png}
+\includegraphics[scale=0.7]{graphs/undersample.png}
+\label{undersamplegraph}
 \end{figure}
 
+\pagebreak
 
+\subsection{Final Model}
+
+The final model that was produced then had the following characteristics: 
+
+\begin{itemize}
+    \item The data was formatted into trigram tokens.
+    \item The most frequent 105,000 n-gram tokens were used as input features.
+    \item The classification model is Logistic Regression.
+    \item No oversampling or undersampling techniques were applied.
+\end{itemize}
+
+Which results in a model that has an average F1 score of 0.7843 (4 significant figures). 
 
 \subsection{Implementation}
 
-To create a useful implementation of the final model it has been 
+The simplest solution to provide an interface between the final produced semantic prediction model and the Spotify API is to create a web application. The final classification model was hosted on a very simple python server that takes text as an input, and returns whether it classes the text as Positive, Negative or Neutral for each Valence, Arousal or Dominance dimension. 
 
-\todo{structure of final system}
+The final solution, as shown in Figure \ref{implementationLayout} consists of three distinct hosted solutions, two of which access the API hosted by Spotify to access song data and authentication.
 
+The UI was chosen to be built in Angular.js and the music API with Node.js due to prior development knowledge, and hence ease of prototyping. 
+To ensure that any resultant song given back was one that the user could relate to, the song that is given back is taken from the users recent top songs. 
+The music API, built in Node.js is influenced by the structure of existing Spotify API projects \cite{moodtape}, is built mostly using the Node Package spotify-web-api-node \cite{nodeSpotify} which allows for ease of dealing with authenticating users, so that the users top songs can be accessed.
+
+\begin{figure}[ht]
+\caption{General layout of how the web application is structured.}
+\centering
+\includegraphics[scale=0.6]{litImgs/interfaceLayout.png}
+\label{implementationLayout}
+\end{figure}
+                
+
+Choosing how to relate the VAD values to the data returned by the Spotify was relatively arbitrary, and something that if there was more time could be investigated further. Since the song data returns a Valence value for the song, that is an easy relation, and it was chosen to map the Arousal to the "Energy" attribute, and the Dominance to the "Danceability", but this is something that can be improved upon as plenty of other data is also returned about the song which can be related to the three dimensions, such as relating the tempo and loudness of the songs.
+
+The main goal of the implementation is to attempt to relate an emotion which is subjective, to a song since that is also subjective so a decision was made to not show the user the VAD values, and just the result song to begin with. After the users reaction to the response song has been assessed, the calculated Ekmans emotion can be shown (calculated by the figures given in Table \ref{ekmansTable}) and discussed.
+
+\begin{figure}[ht]
+\caption{Layout of main UI page}
+\centering
+\includegraphics[scale=0.4]{litImgs/UIScreenshot.png}
+\label{UIlayout}
+\end{figure}
+
+\begin{figure}[ht]
+\caption{User activity through the application}
+\centering
+\includegraphics[scale=0.6]{litImgs/interfaceFlow.png}
+\label{implementationLayout}
+\end{figure}

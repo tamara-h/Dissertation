@@ -81,13 +81,13 @@ The hypothesis test that will be performed on the data will be the Wilcoxon Sign
 
 \subsection{Lexicon Analysis}
 
-To create a valid F1 score to create a base model off, we will calculate the confusion matrix and then the F1 score of a lexicon based prediction model, where the result VAD values are calculated by averaging the values of the sentences individual words that are looked up within the lexicon based dataset \cite{wordsData} for each instance in the Emobank dataset. These values are then compared to the assigned scores that are given to it.
+For the bag-of-words model, we will calculate the confusion matrix and then the F1 score by totalling up the values for each sentence over the Emobank dataset, and then comparing the two results, the calculated values, and the ones given in Emobank sample. The values are calculated by looking up each word in the bag-of-words dataset \cite{wordsData}.
 
-To get the words from the EmoBank dataset into a state where they are most likely to be found within the lexicon dataset is to perform some natural language processing on the data, using the NLTK \cite{NLTKBook} library to stem the words, returning words to their root form.
+To get the words from the EmoBank dataset into a state where they are most likely to be found within the lexicon datase, some natural language processing needs to be done on the data, using the NLTK \cite{NLTKBook} library to stem the words, returning words to their root form.
 
-An example of this is the word "Fishing" would be reduced to the word "Fish" after being stemmed. 
+For example, the word "Fishing" would be reduced to the word "Fish" after being stemmed. 
 
-As we can see from Figure \ref{lexiconGraph}, the average values for the Arousal are much lower across the lexicon dataset, and this is reflected in the F1 scores for each dimension that are returned from this model:
+As we can see from Figure \ref{lexiconGraph}, the average values for the Arousal are much lower across the bag-of-word dataset, and this is reflected in the F1 scores for each dimension that are returned from this lexicon based model:
 
 \begin{table}
 \centering
@@ -105,9 +105,9 @@ As we can see from Figure \ref{lexiconGraph}, the average values for the Arousal
 
 \end{table}
 
-We can see that in fact that for the Valence and Dominance dimensions, this form of prediction performs quite well, and whether these scores can be further improved with machine learning methods will be interesting.
+We can see that for the Valence and Dominance dimensions, this form of prediction performs quite well, and whether these scores can be further improved with machine learning methods will be interesting.
 
-To explore why the Arousal dimension performs so badly, we can take a closer look at the generated confusion matrix, as shown in Table \ref{lexicon:a:conmat}. As we can see, most of the neutral data was predicted to be negative, which is definitely influenced by the trend in the lexicon dataset for the Arousal values to be lower. There are also no correctly predicted values in the positive class, which also leads to the extremely low F1 score.
+To explore why the Arousal dimension performs so badly, we can take a closer look at the generated confusion matrix, as shown in Table \ref{lexicon:a:conmat}. As we can see, most of the neutral data was predicted to be negative, which is definitely influenced by the trend in the bag-of-words dataset, where the average values for the Arousal are quite low. There are also no correctly predicted values in the positive class, which also contributes to the extremely low F1 score.
 
 \begin{table}
 \centering
@@ -129,23 +129,21 @@ To explore why the Arousal dimension performs so badly, we can take a closer loo
 \end{table}
 
 
-Note that the values in Table \ref{lexicon:a:conmat} do not cover the whole dataset either, due to instances when all of the words in the EmoBank sample cannot be found within the lexicon dataset. In this case there are around 1500 sentences for which a VAD value could not be calculated, showing that this bag-of-words based method is far from optimal.
-
-To run across the whole EmoBank dataset, this implementation takes 182 seconds.
+It is also worth noting that the values in Table \ref{lexicon:a:conmat} do not cover the whole dataset either, due to instances when all of the words in the EmoBank sample cannot be found within the lexicon dataset. In this case there are around 1,500 sentences for which a VAD value could not be calculated, showing that this bag-of-words based method is far from optimal since all of the data cannot be analysed.
 
 \subsection{Data Pre-processing (N-Gram and Feature selection)}
 
-Following Ricky Kim's investigations into semantic analysis \cite{towardsDS}, an investigation into optimising the format for the data input is carried out. 
+Following R. Kim's investigations into semantic analysis \cite{towardsDS}, an investigation into optimising the format for the data input is carried out. 
 
-To be able to analyse the text, the sklearn CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary. \cite{sklearn}
+To be able to analyse the text, the sklearn CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary, which then become the features for inputting into a machine learning classifier \cite{sklearn}.
 
-From this we can limit the number of features that we can take, here the number of features is the number of most popular N-Grams, and we can set the N-Gram range easily. 
+From this we can also limit the number of features that we can take, with the number of features being the number of most popular N-Grams, and we can set the N-Gram range easily. 
 
 The previous investigation only tried N-Gram values ranging up to trigram, but to ensure that this is an optimal result, the experiment will be carried out up to fourgram.
 
-The range of features that was used previously was up to 10,0000 number of features because the results did not improve after this, but since we are using a different dataset, the number of features tested was increased until the resultant graph implied that the F1 score did not improve further. 
+The range of features that was used previously was up to 10,0000 features because the results did not improve after this, but since we are using a different dataset, the number of features tested was increased until the resultant graph implied that the F1 score did not improve further. 
 
-The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this has been shown to give the most promising results \cite{towardsDS}.
+The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this has been shown to give the most promising results in previous work \cite{towardsDS}.
 
 \begin{figure}[h]
 \caption{Experimental Results for varying the number of features and values for N-Gram sequences}
@@ -154,13 +152,13 @@ The model used to investigate how the F1 score varies as the inputs change will 
 \label{ngramGraph}
 \end{figure}
 
-As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value increases up to a point, and also increases as the number of features also does. An explanation of why the values for fourgram are generally less than for trigram could be because the dataset is not that large and therefore predictions are less accurate since the relationships between the words cannot be properly established, so for our purposes we can leave out fourgram as it requires a significantly higher amount of processing time, as shown in Table \ref{ngram:time}. The values in Table \ref{ngram:time} are estimates calculated just to show the scale differences between the variables.
+As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value increases up to a point, and the score also increases as the number of features does. An explanation of why the values for fourgram are generally less than for trigram, could be because the dataset is not that large and therefore predictions are less accurate as the relationships between the words cannot be properly established, so for our purposes we can leave out fourgram. It requires a significantly higher amount of processing time, as shown in Table \ref{ngram:time}. The values in Table \ref{ngram:time} are estimates calculated just to show the scale differences between the variables.
 
 
 \begin{table}
 \centering
-\label{ngram:time}
 \caption{Approximate Computation time for each N-Gram value.}
+\label{ngram:time}
 \begin{tabular}{ |p{3cm}|p{3cm}|}
  \hline
   N-Gram selection & Time (s) \\
@@ -173,10 +171,9 @@ As shown in Figure \ref{ngramGraph}, the F1 score improves as the N-Gram value i
 \end{tabular}
 
 \end{table}
+\pagebreak
 
-
-As we want do not want to use unnecessary processing power, we want the number of features in the training set to be as low as possible, and setting 
-
+\subsubsection{Hypothesis Tests} \todo{optimal way to show hypothesis test results?}
 
 Using the trigram values to compare, the hypothesis test shows that the F1 score still increases after 85,000 features as shown below:
 
@@ -196,11 +193,10 @@ Using the Wilcoxon rank sum test with 90\% confidence interval
 p = 0.15 so reject $H_a$
 
 
-We can conclude that the optimal number of features to use in the model is 105,000, and this value will be used in the rest of the investigations as to maximise the score of the result model.
+We can conclude that the optimal number of features to use in the model is 105,000, and this value will be used in the rest of the investigations as to maximise the score of the resultant model. 
 
 
-
-Using this value to compare bigram and trigram results with the following test 
+Using this value of 105,000 features, we can compare bigram and trigram results in the following test:
 
 $$ H_0: \textnormal{F1 score of Bigram and Trigram is the same at 105,000 features} $$
 $$ H_1: \textnormal{F1 score of Bigram is less than Trigram at 105,000 features} $$
@@ -223,21 +219,25 @@ To choose the models to compare, we will take the top models compared in previou
 \label{model:graph}
 \end{figure}
 
+The inbuilt models in the sklearn package with default settings were used for initial comparison, and as we can see from Figure \ref{model:graph} the difference between the models is very slight, with the F1 scores all within a 3\% range of score. Since each of the models compared are all using their default settings within the sklearn package, more work could be done to optimise them further in the future, but just to argue for choosing the best default classifier the following hypothesis test is run.
 
-The inbuilt models in the sklearn package with default settings were used for initial comparison, and as we can see from Figure \ref{model:graph} the difference between the models is very slight, with the F1 scores all within a 3\% range. As expected logistic regression leads to the highest results, but to be certain we run a hypothesis test to ensure the F1 score is greater than the next highest result, Multinomial Naive Bayes as follows:
+\subsubsection{Hypothesis Tests}
+
+As expected logistic regression leads to the highest results, but to be certain we run a hypothesis test to ensure the F1 score is greater than the next highest result, Multinomial Naive Bayes as follows:
 
 $$ H_0: \textnormal{F1 score for the Logistic Regression is the same as Multinomial NB}$$
 $$ H_a: \textnormal{F1 score for the Logistic Regression is the greater than Multinomial NB}$$
 
-Using the Wilcoxon rank sum test with 90\% confidence interval, p = 0.02 so reject $H_0$, so we can select Logistic Regression as the optimal classification model to use.
+Using the Wilcoxon rank sum test with 90\% confidence interval, p = 0.02 so reject $H_0$.
+
+We can select Logistic Regression as the optimal classification model to use.
 
 
 \subsection{Oversampling and Undersampling}
 
 To carry out the investigation of applying the oversampling and undersampling methods, the library functions in the imblearn API is used, which can be used in conjunction with the sklearn methods easily. 
 
-Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary, and as we can see from Figure \ref{oversamplegraph}, using any oversampling methods actually decreases the F1 score by a significant amount. 
-
+Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary, and as we can see from the results from the investigation shown in  Figure \ref{oversamplegraph}, using any of the oversampling methods decreases the F1 score by a significant amount. 
 
 \begin{figure}[ht]
 \caption{Graph showing the F1 score for different oversampling methods}
@@ -249,7 +249,7 @@ Since it is unclear whether these methods will actually improve the model, compa
 An explanation as to why this is happening is most likely a combination of using textual data, which is known to cause issues with oversampling methods, and the severity of the imbalance in the data. In the valence class, which is the one we are analysing at this point, the negative samples make up less than 10\% of the overall data and therefore many of the synthetic samples that are created will not make grammatical sense and be of poor quality. 
 
 
-The undersampling methods were known to not give promising results, but due to the issues with oversampling over such imbalance, briefly investigating this was something that could potentially have worked, but as shown in Figure \ref{undersamplegraph}, they all made the model perform significantly worse and hence can be disregarded.
+The undersampling methods were known to not give promising results, but due to the issues with oversampling over such a large class imbalance, briefly investigating this was something that could potentially have worked, but as the experimental results shown in Figure \ref{undersamplegraph}, they all made the model perform significantly worse and hence can be disregarded.
 
 \begin{figure}[ht]
 \caption{Graph showing the F1 score for different undersampling methods}
@@ -291,13 +291,13 @@ Which results in a model that has the F1 scores for the prediction of each dimen
 
 \subsection{Implementation}
 
-The simplest solution to provide an interface between the final produced semantic prediction model and the Spotify API is to create a web application. The final classification model was hosted on a very simple python server that takes text as an input, and returns whether it classes the text as Positive, Negative or Neutral for each Valence, Arousal or Dominance dimension. 
+The simplest solution to provide an interface between the final produced semantic prediction model and the Spotify API is to create a web application. The final classification model was hosted on a very simple python server that takes text as an input, and returns whether it classes the text as Positive, Negative or Neutral for each of the Valence, Arousal or Dominance dimensions. 
 
-The final solution, as shown in Figure \ref{implementationLayout} consists of three distinct hosted solutions, two of which access the API hosted by Spotify to access song data and authentication.
+The final solution, as shown in Figure \ref{implementationLayout}, consists of three distinct hosted solutions, two of which access the API hosted by Spotify to access song data and authentication the user to allow their top songs to be obtained.
 
 The UI was chosen to be built in Angular.js and the music API with Node.js due to prior development knowledge, and hence ease of prototyping. 
-To ensure that any resultant song given back was one that the user could relate to, the song that is given back is taken from the users recent top songs. 
-The music API, built in Node.js is influenced by the structure of existing Spotify API projects \cite{moodtape}, is built mostly using the Node package spotify-web-api-node \cite{nodeSpotify} which allows for ease of dealing with authenticating users, so that the users top songs can be accessed.
+To ensure that any resultant song given back was one that the user could relate to, the final song is taken from a selection of the users recent top songs, which they allow the application access to through the authentication process.
+The music API, built in Node.js is influenced by the structure of existing Spotify API projects \cite{moodtape}, and is built mostly using the Node package spotify-web-api-node \cite{nodeSpotify}.
 
 \begin{figure}[ht]
 \caption{General layout of how the web application is structured.}
@@ -306,16 +306,11 @@ The music API, built in Node.js is influenced by the structure of existing Spoti
 \label{implementationLayout}
 \end{figure}
 
-Choosing how to relate the VAD values to the data returned by the Spotify was relatively arbitrary, and something that if there was more time could be investigated further. Since the song data returns a Valence value for the song, that is an easy relation, and it was chosen to map the Arousal to the "Energy" attribute, and the Dominance to the "Danceability", but this is something that can be improved upon as plenty of other data is also returned about the song which can be related to the three dimensions, such as relating the tempo and loudness of the songs.
+Choosing how to relate the VAD values to the data returned for the songs was relatively arbitrary, and something that if there was more time could be investigated further. Since the song data returns a Valence value for the song it is obvious to map those two attributes together, and it was chosen to map the Arousal to the "Energy" attribute, and the Dominance to the "Danceability", but this is something that can be improved upon.
 
-The main goal of the implementation is to attempt to relate an emotion which is subjective, to a song since that is also subjective so a decision was made to not show the user the VAD values, and just the result song to begin with. After the users reaction to the response song has been assessed, the calculated Ekmans emotion can be shown (calculated by the figures given in Table \ref{ekmansTable}) and discussed.
+The main goal of the implementation is to attempt to relate an emotion in text, which is subjective, to a song since that is also subjective.
 
-\begin{figure}[ht]
-\caption{Layout of main UI page}
-\centering
-\includegraphics[scale=0.4]{litImgs/UIScreenshot.png}
-\label{UIlayout}
-\end{figure}
+A decision was made to not show the user the VAD values, and just the result song to begin with. After the users reaction to the response song has been assessed, the calculated Ekmans emotion can be shown (calculated by the figures given in Table \ref{ekmansTable}) and discussed. \todo{this will be written about in the Results and discussion section}
 
 \begin{figure}[ht]
 \caption{User activity through the application}
@@ -323,3 +318,11 @@ The main goal of the implementation is to attempt to relate an emotion which is 
 \includegraphics[scale=0.6]{litImgs/interfaceFlow.png}
 \label{implementationLayout}
 \end{figure}
+
+\begin{figure}[ht]
+\caption{Layout of main UI page}
+\centering
+\includegraphics[scale=0.4]{implementation/tamara.png}
+\label{UIlayout}
+\end{figure}
+

@@ -12,6 +12,7 @@
 \usepackage[square,numbers]{natbib}
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
+% \usepackage{mathpazo} % Palatino font
 
 \graphicspath{}
 
@@ -99,8 +100,9 @@
 \end{titlepage}
 
 %-----------------
-
+% \setcounter{tocdepth}{2}
 \tableofcontents
+
 
 \pagebreak
 
@@ -108,9 +110,13 @@
 
 Analysing the emotions behind a piece of text is not always an easy problem even for human readers, and trying to compute this is much harder.
 
-Many sentiment analysis tools already exist that predict whether input text is positive or negative, but very few attempt to obtain more detail about the mood behind it. Understanding something as subjective as an emotion cannot always be put into these discrete binary classes, and as such, exploring whether an emotion can be represented by more than just this one dimension, could hold significant value.
+Sentiment Analysis is a branch of Natural Language Processing where text analysis is used to extract and identify subjective information from text based data. This style of analytics has wide applications, primarily in marketing and customer service industries where materials such as social media and survey responses are utilised to provide intelligent information about a target market. 
 
-Extensive research has gone into optimising these existing prediction models however, and applying the results of these investigations to a more complex emotive prediction is something that this project aims to examine.
+Many sentiment analysis tools already exist that predict whether input text is positive or negative, but very few attempt to obtain more detail about the mood behind it. Understanding something as subjective as an emotion cannot always be put into these discrete binary classes, and as such, exploring whether an emotion can be represented by more than just this one dimension could hold significant value. Applications for establishing a more detailed emotion behind a text could be working out whether a customer who has a complaint about a product is angry or just disappointed, so that appropriate reimbursement can be suggested.
+
+Extensive research has gone into producing binary sentiment analysis models with a high level of prediction accuracy, and using the results of these investigations to apply to a more complex emotive prediction model is something that this project aims to examine.
+
+\todo{write more here?}
 
 We can formalise this into two main research questions to answer:
 
@@ -120,8 +126,11 @@ We can formalise this into two main research questions to answer:
     \item Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?
 \end{itemize}
 
+\todo{explain these more, need to clarify insight}
+\todo{referring to prediction granularity}
 
 \input{body.tex}
+
 \section{Conclusion}
 
 \pagebreak

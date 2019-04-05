@@ -44,15 +44,15 @@ Model & F1 Score \\ \hline
 \label{f1:adj}
 \end{table}
 
-\subsection{Does using more than 1 dimension to classify emotions provide more insight, and how can this be quantified?}
+\subsection{Is using more than 1 dimension to classify emotions useful?}
 
-
-
-To be able to evoke enough emotive text from a user, the UI states "Please describe how your week is going so far. Be as detailed as possible.". This was arbitrarily chosen as just a question that does not simply have a yes or no answer, and an investigation could be made in future to find a better way of inspiring the optimal amount of input text an particularly emotive style.
-
-All but 2 of the tests gave the result Ekman's emotion back as "Surprise", and the other two came back with "Disgust" which was incorrect every time. An explanation for this results would be because, as shown in \todo{contintue}
-
+Analysing something like insight into an emotion is very subjective, and finding a good way to evaluate this has been difficult. With 60\% of the test users agreeing with the output song, it could be said that there is reason to believe that the model produces accurate results. One major contributor to how the song that is returned back to the user is chosen, that has not been analysed in great depth is that it was chosen that the song should be taken from the users top artists so that they should understand and relate to it easily. What can be done with the Spotify API is to give a time frame from which the pool of top artists can be chosen, such as you can choose to only return the top artists from the last week. When the posed question is inquiring into how your week has been going, choosing only the top songs from the past week are much more likely to be related to the users mood from that week. How this affects the output and the users feedback to the song is something that requires more investigation. 
+\todo{unsure how to argue my point here}
 
 \subsection{Project Reflection and Future Work}
 
-\todo{Choosing how to relate the VAD values to the data returned for the songs is relatively arbitrary and something that if there was more time could be investigated further.}
+From a personal perspective this project has been thoroughly enjoyable. I had almost no machine learning knowledge before starting, and I have learned more than I had anticipated, particularly about statistics. Being able to apply new techniques to tools that I was already familiar with has been has been an accomplishment, and I am happy with the final product that I have produced. 
+
+Things that I would do differently now would be to create a more formal structure of the project earlier on and reach the research questions to answer at an earlier point so that less time was spent exploring things which ended up being unnecessary. I'd have liked to have spent more time getting to know the data early on also so that the dependency between the classes could have been investigated further. 
+
+Keeping the VAD values in their original continuous form, and building a prediction model off this is also something that would be interesting to explore further, and comparing this to the model used in this project would offer more insight into how the Emobank dataset can be utilised.

@@ -81,15 +81,15 @@ The model used to investigate how the F1 score varies as the inputs change will 
 
 \subsection{Model Selection}
 
-To choose the models to compare, we will take the top models compared in previous sentiment analysis work \cite{towardsDS} and see which can work best in this situation. \todo{expand on this}
+To choose the models to compare, we will take the top models compared in previous sentiment analysis work \cite{towardsDS} and see which can work best in this situation. \todo{unsure how to expand on this without repeating information from the lit review or the results}
 
 \subsection{Oversampling and Undersampling}
 
-To carry out the investigation of applying the oversampling and undersampling methods, the library functions in the imblearn API is used, which can be used in conjunction with the sklearn methods easily. 
+To carry out the investigation of applying the oversampling and undersampling methods, the library functions in the imblearn API is used, which can be used in conjunction with the sklearn methods easily.
 
 Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary.
 
-\todo{also expand on this}
+\todo{same issue here}
 
 \subsection{Implementation}
 
@@ -114,12 +114,12 @@ The music API, built in Node.js is influenced by the structure of existing Spoti
 
 Choosing how to relate the VAD values to the data returned for the songs is relatively arbitrary,and something that if there was more time could be investigated further. Since the song data returns a Valence value for the song it is obvious to map those two attributes together, and it was chosen to map the Arousal to the "Energy" attribute, and the Dominance to the "Danceability", but this is something that can be improved upon.
 
-The main goal of the implementation is to attempt to relate an emotion in text, which is subjective, to a song since that is also subjective, but to help clarify whether the model is appropriate, the closest Ekman's emotion as given in Table \ref{ekmansTable} will be calculated and conveyed back to the user for discussion. This emotion will not be exact due to the choice of putting the variables into discrete classes and the closeness of some of the emotions as shown in Figure \ref{ekmans:graph}, but the result should help the users assess whether the given emotion is correct. The choice not to show the users the direct VAD values is made so that the users do not need an explanation of the structure to understand the emotion behind it.
+The main goal of the implementation is to attempt to relate an emotion in text, which is subjective, to a song since that is also subjective, but to help clarify whether the model is appropriate, the closest Ekman's emotion as given in Table \ref{ekmansTable} will be calculated and conveyed back to the user for discussion. This emotion will not be exact due to the choice of putting the variables into discrete classes and the closeness of some of the emotions as shown in Figure \ref{ekmans:graph}, but the result should help the users assess whether the given emotion is correct. The choice not to show the users the direct VAD values is made so that the users do not need an explanation of the structure to understand the emotion behind it. The Ekmans emotion will be calculated by finding the shortest distance by mapping the calculated Positive/Neutral/Negative classes to a scale between 0 and 1, and then finding the shortest distance between the calculated point and the values in Table \ref{ekmansTable}.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=2]{litImgs/Ekmans3d.png}
 \label{ekmans:graph}
-\caption{3d plot of the figures given in Table \ref{ekmansTable}}
+\caption{3D plot of the figures given in Table \ref{ekmansTable}}
 \end{figure}
 

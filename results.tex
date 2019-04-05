@@ -119,15 +119,14 @@ $$ H_a: \textnormal{F1 score at 85,000 features is less than at 165,000 features
 
 Using the Wilcoxon rank sum test with 95\% confidence interval p = 0.08 so reject $H_a$
 
-
-We can conclude that the optimal number of features to use in the model is 85,000, \todo{why} and this value will be used in the rest of the investigations as to maximise the score of the resultant model. 
+We can conclude that the optimal number of features to use in the model is 85,000, since we reject the alternate hypothesis when using a hypothesis test with a 95\% accuracy if the p-value is greater than 0.05. This number of features will be used in the rest of the investigations as to maximise the score of the resultant model. 
 
 Using this value of 85,000 features, we can compare unigram and bigram results in the following test:
 
 $$ H_0: \textnormal{F1 score of unigram and bigram is the same at 85,000 features} $$
 $$ H_a: \textnormal{F1 score of unigram is less than bigram at 85,000 features} $$
 
-Using the Wilcoxon rank sum test with 95\% confidence interval, p = 0.01 so reject $H_0$.
+Using the Wilcoxon rank sum test with 95\% confidence interval, p = 0.01 so reject $H_0$ and accept the alternate hypothesis.
 
 To then check bigram is the optimal, we check the F1 score does not significantly increase at 85,000 features for trigram results, so we carry out the following test:
 
@@ -251,7 +250,7 @@ A decision was made to not show the user the VAD values, and just the result son
 \label{UIlayout}
 \end{figure}
 
-Getting an F1 score of 0.84 on the model is a reasonable result, but testing whether users believe that the model is accurately predicting their moods is something that needs to be assessed. Using the built web application on conjunction we are able gain feedback from test users, asking them to input their own text and access their own Spotify data through the application to obtain a result. \todo{change this}
+Getting an F1 score of 0.84 on the model is a reasonable result, but testing whether users believe that the model is accurately predicting their moods is something that needs to be assessed. Using the built web application on conjunction we are able gain feedback from test users, asking them to input their own text and access their own Spotify data through the application to obtain a result.
 
 Out of the 5 users that the program was tested with, 3 concluded that the song did match their emotion and 2 did not. This is a very small focus group, and for a more detailed analysis more feedback needs to be gathered, but for the purpose of gaining insight into whether the system is appropriate for answering the research question, an initial idea can be obtained.
 
@@ -279,6 +278,8 @@ The first user concluded that the song matched what they had input, stating that
  Ekman's Emotion &  Surprise\\ \hline
 \end{tabular}
 \end{table}
+
+\pagebreak
 
 \subsubsection{User B}
 

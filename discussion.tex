@@ -1,6 +1,4 @@
 \section{Discussion} 
-\todo{the decision to annotate text using the VAD structure was maybe a limitation, other structures could be looked into further?}
-
 \subsection{How can textual sentiment prediction be optimised?}
 
 Two main methods of predicting the sentiment of input text have been analysed, using a bag-of-words method, and using machine learning approaches.
@@ -9,13 +7,13 @@ The lexicon based bag-of-words is based entirely on having an appropriate datase
 
 The decision to use the machine learning based model for the implementation is due to having overall more stable F1 scores for each dimension, but this is only due to training and testing over the same dataset. 
 
-One point which has not been addressed by this investigation is that the VAD values for each sentence are related to one another. This can be shown by the mosaic plot of the data in Figure \ref{mosaic:emo}, where we can see that the majority of the data is taken up by samples which are neutral in all three dimensions, IE. \todo{is this correct?} if the prediction over a sentence returns that it has neutral Valence and Arousal, then it is much more likely to have a neutral Dominance. Figure \ref{mosaic:emo} also displays the Pearson residuals for the data, which shows that for many of the classes that contain Neutral values, particularly neutral Arousal there are a lot less samples than expected when a Pearson $\chi^2$ test is performed comparing to the null model if the values were not related. This test was as it tests against a null hypothesis that the distribution of values are independent, and in this case it rejects this null hypothesis with a p-value of 2.22E-16 \cite{zeileis2007residual}.
+One point which has not been addressed by this investigation is that the VAD values for each sentence are related to one another. This can be shown by the mosaic plot of the data in Figure \ref{mosaic:emo}, where we can see that the majority of the data is taken up by samples which are neutral in all three dimensions, ie. if the prediction over a sentence returns that it has neutral Valence and Arousal, then it is much more likely to have a neutral Dominance. Figure \ref{mosaic:emo} also displays the Pearson residuals for the data, which shows that for many of the classes that contain Neutral values, particularly neutral Arousal there are a lot less samples than expected when a Pearson $\chi^2$ test is performed comparing to the null model if the values were not related. This test was as it tests against a null hypothesis that the distribution of values are independent, and in this case it rejects this null hypothesis with a p-value of 2.22E-16 \cite{zeileis2007residual}.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.7]{graphs/mosaic_new.png}
-\label{mosaic:emo}
 \caption{Emobank data distribution with relationships. The Pearson residuals are the deviation from the expected frequency by a Pearson $\chi^2$ Test \cite{pearson1900x}}
+\label{mosaic:emo}
 \end{figure}
 
 Because of this, a small extention investigation was done using the existing model setup as given in Section \ref{finalModelSection} to train a model to each predict a V, A, D value, given the other two as inputs, as shown in Figure \ref{model:adjust}. Since these adjustment models do not take in the input sentence, the number of feature selection and n-gram values were not needed. Ideally, a model would be trained off all the values 
@@ -23,8 +21,8 @@ Because of this, a small extention investigation was done using the existing mod
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.6]{implementation/adjustModel.png}
-\label{model:adjust}
 \caption{Diagram showing inputs and outputs for the valence prediction model}
+\label{model:adjust}
 \end{figure}
 
 These models have good F1 scores compared to the model with the sentence data, and more investigation needs to be done on how to incorporate these adjustment models into the final result. For a quick prototype of implementing this, the decision was made to make a small adjustment to the score given back by the main prediction model. The values that it was chosen are relatively arbitrary and further work could be done to investigate the optimal way to handle the dependency of these variables further.
@@ -49,10 +47,3 @@ Model & F1 Score \\ \hline
 Analysing something like insight into an emotion is very subjective, and finding a good way to evaluate this has been difficult. With 60\% of the test users agreeing with the output song, it could be said that there is reason to believe that the model produces accurate results. One major contributor to how the song that is returned back to the user is chosen, that has not been analysed in great depth is that it was chosen that the song should be taken from the users top artists so that they should understand and relate to it easily. What can be done with the Spotify API is to give a time frame from which the pool of top artists can be chosen, such as you can choose to only return the top artists from the last week. When the posed question is inquiring into how your week has been going, choosing only the top songs from the past week are much more likely to be related to the users mood from that week. How this affects the output and the users feedback to the song is something that requires more investigation. 
 \todo{unsure how to argue my point here}
 
-\subsection{Project Reflection and Future Work}
-
-From a personal perspective this project has been thoroughly enjoyable. I had almost no machine learning knowledge before starting, and I have learned more than I had anticipated, particularly about statistics. Being able to apply new techniques to tools that I was already familiar with has been has been an accomplishment, and I am happy with the final product that I have produced. 
-
-Things that I would do differently now would be to create a more formal structure of the project earlier on and reach the research questions to answer at an earlier point so that less time was spent exploring things which ended up being unnecessary. I'd have liked to have spent more time getting to know the data early on also so that the dependency between the classes could have been investigated further. 
-
-Keeping the VAD values in their original continuous form, and building a prediction model off this is also something that would be interesting to explore further, and comparing this to the model used in this project would offer more insight into how the Emobank dataset can be utilised.

@@ -97,7 +97,9 @@ In terms of developing the sentiment analysis tool, using Python is a clear choi
 
 Using other libraries such as Tensorflow is also applicable in this case,  and they are a powerful tool for building models that utilise neural networks, but in this case using the "off-the-shelf" classifiers given by the sklearn library is all we need for this investigation.
 
-The simplest solution to provide an interface between the final produced semantic prediction model and the Spotify API is to create a web application. \todo{talk about the spotify API} The final classification model was hosted on a very simple python server that takes text as an input, and returns whether it classes the text as Positive, Negative or Neutral for each of the Valence, Arousal or Dominance dimensions. 
+The simplest solution to provide an interface between the final produced semantic prediction model and the Spotify API is to create a web application. The Spotify API is a service which can be used by developers to access user and song data within the service \cite{nodeSpotify}, allowing access to a large dataset of music where each song is annotated in with in depth information.
+
+The final classification model was hosted on a very simple python server that takes text as an input, and returns whether it classes the text as Positive, Negative or Neutral for each of the Valence, Arousal or Dominance dimensions. 
 
 The final solution, as shown in Figure \ref{implementationLayout}, consists of three distinct hosted solutions, two of which access the API hosted by Spotify to access song data and authentication the user to allow their top songs to be obtained.
 

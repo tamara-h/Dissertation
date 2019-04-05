@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
@@ -100,7 +100,7 @@
 \end{titlepage}
 
 %-----------------
-% \setcounter{tocdepth}{2}
+\setcounter{tocdepth}{2}
 \tableofcontents
 
 
@@ -124,10 +124,20 @@ We can formalise this into two main research questions that will be investigated
     \item How can textual sentiment prediction be optimised?
     \item Is using more than 1 dimension to classify emotions useful?
 \end{itemize}
-
+\pagebreak
 \input{body.tex}
 
 \section{Conclusion}
+
+From a personal perspective this project has been thoroughly enjoyable. I had almost no machine learning knowledge before starting, and I have learned more than I had anticipated, particularly about statistics. Being able to apply new techniques to tools that I was already familiar with has been has been an accomplishment, and I am happy with the final product that I have produced. 
+
+Things that I would do differently now would be to create a more formal structure of the project earlier on and reach the research questions to answer at an earlier point so that less time was spent exploring things which ended up being unnecessary. I'd have liked to have spent more time getting to know the data early on also so that the dependency between the classes could have been investigated further. 
+
+Keeping the VAD values in their original continuous form, and building a prediction model off this is also something that would be interesting to explore further, and comparing this to the model used in this project would offer more insight into how the Emobank dataset can be utilised.
+
+Textual data analysis is very relevant during the age of social media and big data, finding trends and gaining a deeper awareness into how this can be quantified into usable information is important for understanding the trends behind these sources, and understanding the emotion behind them. Sentiment is a human emotion, and as such is difficult to quantify in a non subjective way. This project aims to solve some of the issues that face sentiment analysis techniques, bringing about a suggestion as to where using a more complex than standard style of emotion representation can be used to greatest effect, and how it can be effectively utilised to lead to give more information and insight into textual data.
+
+Leading on from the findings of this project, future exploration of sentiment representation and analysis can be done with a better understanding of how to quantify something as seemingly unquantifiable as an emotion.
 
 \pagebreak
 

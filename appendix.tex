@@ -19,6 +19,56 @@ The R Script for running the relevant hypothesis test over the data can be found
 
 \section{Project File Structure}
 
+The postman layout for all the HTTP requests, with example responses can be found at:
+\\ https://documenter.getpostman.com/view/5563343/S1EJXgL9
+\\ 
+VERSIONS USED: 
+\begin{itemize}
+    \item Python 3.6
+    \item Node  8.10
+\end{itemize}
+
+\subsection{Diss}
+Contains dissertation files .tex files.
+
+\subsection{UI}
+Contains UI for running the web application.  To run, node.js and Angular.js will need to be installed.
+To start, navigate into directory and run "npm start", this will automatically install dependencies as well.
+This runs on port 8000.
+UI Design files are in the app directory.
+
+\subsection{Sentiment Analysis}
+
+The final files for carrying out the investigations are in the main directory:
+
+\begin{itemize}
+    \item dataProcess.py - Formats each datasets with correct labels and for putting the variables into discrete categories
+    \item preProcessingandModel.py - Investigating N-Gram / Number of features / Model
+    \item overUnderTest.py - Investigating sampling methods
+    \item finalModel.py - Contains a copy of the final model
+    \item adjustModel.py  - Contains the adjustment model for dealing with the dependencies between the variables.
+    \item bagOfWords.py - Runs the lexicon analysis investigation
+    \item ./data -  contains the datasets and output statistics for the hypothesis tests
+    \item ./FinalGraphs -  contains the output graphs from the investigations
+    \item ./oldFiles - contains initial trials into setting up the investigations.
+\end{itemize}
+
+
+\subsection{Sentiment Python Server}
+
+\begin{itemize}
+    \item train.py
+    \item server.py
+\end{itemize}
+train.py contains an instance of the final model as set out by the Sentiment Analysis directory finalModel.py and  hosts it on a very simple python server so that it can be accessed by the web app. 
+To run the server, navigate into the directory and run "python server.py". Runs on port 8090.
+
+\subsection{Spotify Data}
+To start, navigate into directory and run "npm start", this will automatically install dependencies as well.  This will only run if the secrets.js file is accessible. Runs on port 8080.
+
+\subsection{Statistical Analysis}
+Contains the R files for running the hypothesis tests set out.
+
 \section{Project Log}
 
 \end{appendices}

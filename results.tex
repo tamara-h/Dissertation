@@ -1,5 +1,4 @@
 \section{Results}
-
 \subsection{Data Imbalance}
 An initial look at the data shows that there is a large number of sentences represented with values a neutral area, and very few representing the extreme cases, as shown in Figure \ref{dist:vad}.
 
@@ -30,8 +29,9 @@ A middle ground can be found when splitting the data into positive, neutral and 
 \label{dist:tri}
 \end{figure}
 
-\subsection{Lexicon Anaysis}
+To mitigate the effects of the data imbalance over and undersampling techniques will be investigated, applied to the data based on the resultant classes since this is likely to have an effect on how we can calculate the performance of the model.
 
+\subsection{Lexicon Analysis}
 
 \begin{table}
 \centering
@@ -48,7 +48,7 @@ A middle ground can be found when splitting the data into positive, neutral and 
 \label{lexicon:f1}
 \end{table}
 
-We can see that for the Valence and Dominance dimensions, this form of prediction performs quite well, and whether these scores can be further improved with machine learning methods will be interesting.
+We can see in Table \ref{lexicon:f1} that for the Valence and Dominance dimensions, using lexicon analysis as a form of prediction performs quite well, and whether these scores can be further improved with machine learning methods will be interesting.
 
 To explore why the Arousal dimension performs so badly, we can take a closer look at the generated confusion matrix, as shown in Table \ref{lexicon:a:conmat}. As we can see, most of the neutral data was predicted to be negative, which is definitely influenced by the trend in the bag-of-words dataset, where the average values for the Arousal are quite low. There are also no correctly predicted values in the positive class, which also contributes to the extremely low F1 score.
 
@@ -183,7 +183,7 @@ We can see from the results from the investigation shown in  Figure \ref{oversam
 \label{oversamplegraph}
 \end{figure}
 
-An explanation as to why this is happening is most likely a combination of using textual data, which is known to cause issues with oversampling methods, and the severity of the imbalance in the data. In the valence class, which is the one we are analysing at this point, the negative samples make up less than 10\% of the overall data and therefore many of the synthetic samples that are created will not make grammatical sense and be of poor quality. 
+An explanation as to why this is happening is most likely a combination of using textual data, which is known to cause issues with oversampling methods, and the severity of the imbalance in the data. In the Valence class, which is the one we are analysing at this point, the negative samples make up less than 10\% of the overall data and therefore many of the synthetic samples that are created will not make grammatical sense and be of poor quality. 
 
 To ensure that the base case is higher than the second highest result, the ADASYN sampler we run a hypothesis test as follows:
 
@@ -250,12 +250,15 @@ A decision was made to not show the user the VAD values, and just the result son
 \label{UIlayout}
 \end{figure}
 
-Getting an F1 score of 0.84 on the model is a reasonable result, but testing whether users believe that the model is accurately predicting their moods is something that needs to be assessed. Using the built web application on conjunction we are able gain feedback from test users, asking them to input their own text and access their own Spotify data through the application to obtain a result.
+Getting an F1 score of 0.84 on the model is a reasonable result, but testing whether users believe that the model is accurately predicting their moods is something that needs to be assessed. 
 
-Out of the 5 users that the program was tested with, 3 concluded that the song did match their emotion and 2 did not. This is a very small focus group, and for a more detailed analysis more feedback needs to be gathered, but for the purpose of gaining insight into whether the system is appropriate for answering the research question, an initial idea can be obtained.
+\subsection{User Feedback}
+Using the built web application on conjunction we are able gain feedback from test users, asking them to input their own text and access their own Spotify data through the application to obtain a result. 
+Out of the five different people that the program was tested with, 3 concluded that the song did match their emotion and 2 did not. This is a very small focus group, and for a more detailed analysis more feedback needs to be gathered, but for the purpose of gaining insight into whether the system is appropriate for answering the research question, an initial idea can be obtained.
 
 It was decided to initially hide the calculated Ekmans emotion from the user, so that their analysis of the result song is not influenced. 
-Two users, one which agreed with the result and one that did not are studied in more detailed as follows:
+
+Two users with conflicting opinions on how useful and accurate the implementation is, is set out in more detail:
 
 \subsubsection{User A}
 

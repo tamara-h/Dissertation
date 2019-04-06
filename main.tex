@@ -16,6 +16,14 @@
 
 \graphicspath{}
 
+\usepackage{fancyvrb}
+
+\usepackage{markdown}
+
+
+
+\newtheorem{theorem}{RQ}
+
 \lstdefinestyle{leftCode}{
   belowcaptionskip=1\baselineskip,
   breaklines=true,
@@ -120,24 +128,35 @@ Extensive research has gone into producing sentiment analysis models over a posi
 We can formalise this into two main research questions that will be investigated as part of this project:
 
 \subsection{Research Questions}
+
+
 \begin{itemize}
-    \item How can textual sentiment prediction be optimised?
-    \item Is using more than 1 dimension to classify emotions useful?
+    \item   \begin{theorem} 
+                \label{RQ1}
+                \textnormal{How can textual sentiment prediction be optimised?}
+            \end{theorem}   
+    \item   \begin{theorem} 
+                \label{RQ2}
+                \textnormal{Is using more than 1 dimension to classify emotions useful?}
+            \end{theorem} 
 \end{itemize}
+
+After analysis of existing ways to represent sentiment and what data is available to use to challenge this problem we can refine these questions further. 
+
 \pagebreak
 \input{body.tex}
 
 \section{Conclusion}
 
-From a personal perspective this project has been thoroughly enjoyable. I had almost no machine learning knowledge before starting, and I have learned more than I had anticipated, particularly about statistics. Being able to apply new techniques to tools that I was already familiar with has been has been an accomplishment, and I am happy with the final product that I have produced. 
+From a personal perspective this project has been thoroughly enjoyable. I had almost no machine learning knowledge before starting, and I have learned more than I had anticipated, particularly about statistics. Being able to apply new techniques to tools that I was already familiar with has been has been an accomplishment, and I am happy with the final product that has been produced. 
 
-Things that I would do differently now would be to create a more formal structure of the project earlier on and reach the research questions to answer at an earlier point so that less time was spent exploring things which ended up being unnecessary. I'd have liked to have spent more time getting to know the data early on also so that the dependency between the classes could have been investigated further. 
+Things that I would do differently now would be to create a more formal structure of the project earlier on, and formalise the research questions at an earlier point so that less time was spent exploring things which ended up being unnecessary. I'd have also liked to have spent more time getting to know the data early on, so that the dependency between the classes could have been investigated further. 
 
-Keeping the VAD values in their original continuous form, and building a prediction model off this is also something that would be interesting to explore further, and comparing this to the model used in this project would offer more insight into how the Emobank dataset can be utilised.
+Keeping the VAD values in their original continuous form is also something that would be interesting to explore further, and comparing results formed from this to the model used in this project would offer more insight into how the Emobank dataset can be utilised.
 
-Textual data analysis is very relevant during the age of social media and big data, finding trends and gaining a deeper awareness into how this can be quantified into usable information is important for understanding the trends behind these sources, and understanding the emotion behind them. Sentiment is a human emotion, and as such is difficult to quantify in a non subjective way. This project aims to solve some of the issues that face sentiment analysis techniques, bringing about a suggestion as to where using a more complex than standard style of emotion representation can be used to greatest effect, and how it can be effectively utilised to lead to give more information and insight into textual data.
+Textual data analysis is very relevant in the current climate, gaining a deeper awareness into how sources such as social media can be used to identify general trends, and the emotions behind them. Sentiment is a human emotion, and as such is difficult to quantify in a non subjective way.
 
-Leading on from the findings of this project, future exploration of sentiment representation and analysis can be done with a better understanding of how to quantify something as seemingly unquantifiable as an emotion.
+Exploring ways in which an emotion can be represented, and using them to the greatest effect has been explored in this research, and future exploration of sentiment representation and analysis can be done with a better understanding by using what has been set out in this project, and more work can be done to attempt to quantify something as seemingly unquantifiable as an emotion.
 
 \pagebreak
 

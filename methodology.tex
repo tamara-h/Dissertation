@@ -1,5 +1,10 @@
    
 \section{Methodology}
+ 
+To ensure RQ \ref{RQ1} is answered, a set of investigations will be carried out to directly answer the points brought up in the Problem Formulation, and by the use of hypothesis tests be able to come to solid conclusions. 
+
+To answer RQ \ref{RQ2}, an exploration into finding the optimal way to present an interface to gather user feedback will be carried out.
+
 \subsection{Data Imbalance}
 
 The initial issue faced when starting to attempt to build a prediction model was how to split the continuous variables supplied by the EmoBank dataset into discrete categories.
@@ -71,25 +76,23 @@ Following R. Kim's investigations into semantic analysis \cite{towardsDS}, an in
 
 To be able to analyse the text, the sklearn CountVectorizer library is used to return a sparse matrix of the counts of each word in the input vocabulary, which then become the features for inputting into a machine learning classifier \cite{sklearn}.
 
-From this we can also limit the number of features that we can take, with the number of features being the number of most popular N-Grams, and we can set the N-Gram range easily. 
+From this we can also limit the number of features that we can take, with the number of features being the number of most popular N-Grams, and we can set the N-Gram range easily. The previous investigation only tried N-Gram values ranging up to trigram, but to ensure that this is an optimal result, the experiment will be carried out up to fourgram.
 
-The previous investigation only tried N-Gram values ranging up to trigram, but to ensure that this is an optimal result, the experiment will be carried out up to fourgram.
+The range of features that was used previously was up to 10,0000 features because the results did not improve after this, but since we are using a different dataset, the number of features tested will be increased until the resultant graph implies that the F1 score did not improve further.
 
-The range of features that was used previously was up to 10,0000 features because the results did not improve after this, but since we are using a different dataset, the number of features tested was increased until the resultant graph implied that the F1 score did not improve further. 
-
-The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this has been shown to give the most promising results in previous work \cite{towardsDS}.
+The model used to investigate how the F1 score varies as the inputs change will be a Logistic Regression model, as this has been shown to give the most promising results in previous work \cite{towardsDS}, and to compare the results in the hypothesis tests we will use the Valence dimension as previous work uses the Valence of text to build their models and it will be easier to compare to them.
 
 \subsection{Model Selection}
 
-To choose the models to compare, we will take the top models compared in previous sentiment analysis work \cite{towardsDS} and see which can work best in this situation. \todo{unsure how to expand on this without repeating information from the lit review or the results}
+To choose the models to compare, we will take the top models compared in previous sentiment analysis work and see which can work best in this situation. 
+
+In R. Kims investigations, Logistic Regression and Linear Support Vector Classification (SVC) were found to be the best so these will be part of the comparison, and we will set Logistic Regression to be used as a base to carry out initial comparisons. 
+Other models that will be investigated are Mulitnomial Naive Bayes and Bernoulli Naive Bayes since these are known to perform well with text based tasks \cite{socher2013recursive}, as well as including the computationally expensive models, K-Nearest Neighbours and Random Forests. 
 
 \subsection{Oversampling and Undersampling}
 
 To carry out the investigation of applying the oversampling and undersampling methods, the library functions in the imblearn API is used, which can be used in conjunction with the sklearn methods easily.
-
-Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary.
-
-\todo{same issue here}
+Since it is unclear whether these methods will actually improve the model, comparing against the model that we already have is necessary. As set out in the Related Work, how these methods will perform will depend on how the data is set into discrete classes.
 
 \subsection{Implementation}
 
@@ -121,7 +124,14 @@ The main goal of the implementation is to attempt to relate an emotion in text, 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=2]{litImgs/Ekmans3d.png}
-\label{ekmans:graph}
 \caption{3D plot of the figures given in Table \ref{ekmansTable}}
+\label{ekmans:graph}
 \end{figure}
 
+
+To ensure RQ \ref{RQ2} is answered, the following questions will be set to the test users:
+
+\begin{itemize}
+    \item Do you believe the output song relates well to the text that you have input? Why?
+    \item Do you think this (calcuated Ekmans) emotion fits the text and the song well?
+\end{itemize}

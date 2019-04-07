@@ -17,7 +17,7 @@ One point which has not been addressed by this investigation is that the VAD val
 \label{mosaic:emo}
 \end{figure}
 
-Because of this, a small extension investigation was done using the existing model setup as given in Section \ref{finalModelSection} to train a model to each predict a V, A, D value, given the other two as inputs, as shown in Figure \ref{model:adjust}. Since these adjustment models do not take in the input sentence, the number of feature selection and n-gram values were not needed. Ideally, a model would be trained off all the values 
+Because of this, a small extension investigation was done using the existing model setup as given in Section \ref{finalModelSection} to train a model to each predict a V, A, D value, given the other two as inputs, as shown in Figure \ref{model:adjust}. Since these adjustment models do not take in the input sentence, the number of feature selection and n-gram values were not needed. Ideally, a model would be trained off all the values.
 
 \begin{figure}[ht]
 \centering
@@ -46,6 +46,8 @@ Model & F1 Score \\ \hline
 \subsection{RQ 2: Is using more than 1 dimension to classify emotions useful?}
 
 Analysing something like insight into an emotion is very subjective, and finding a good way to evaluate this has been difficult. With 60\% of the five test users agreeing with the output song, it could be said that there is reason to believe that the model produces accurate results. One major contributor to how the song that is returned back to the user is chosen, that has not been analysed in great depth is that it was chosen that the song should be taken from the users top artists so that they should understand and relate to it easily. What can be done with the Spotify API is to give a time frame from which the pool of top artists can be chosen, such as you can choose to only return the top artists from the last week. When the posed question is inquiring into how your week has been going, choosing only the top songs from the past week are much more likely to be related to the users mood from that week. How this affects the output and the users feedback to the song is something that requires more investigation. 
+
+\todo{RQ2}
 
 By relating the VAD values to the Spotify data, we can show that applications for using more than 1 dimension can be found since they can be related over more attributes, hence making a multidimensional structure for representing emotion a very viable option. Initial positive responses from test users show that this method shows that classifying emotion in this way can be generally regarded as correct, although more work needs to be done.
 
